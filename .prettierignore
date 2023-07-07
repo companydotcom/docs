@@ -1,0 +1,6 @@
+.next/
+out/
+dist/
+
+# bellow files are broken since prettier doesn't support MDX2
+pages/index.mdx
