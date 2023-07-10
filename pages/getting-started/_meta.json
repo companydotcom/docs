@@ -1,3 +1,6 @@
 {
-    "index": "Overview"
+    "setting-up-your-first-monorepo": "Setting Up Your First Monorepo",
+    "how-to-get-aws-credentials": "How To Get AWS Credentials",
+    "deploying-your-wave-app": "Deploying Your Wave App",
+    "dns-configuration": "DNS Configuration"
 }
