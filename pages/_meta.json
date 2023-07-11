@@ -1,8 +1,20 @@
 {
-  "index": "Introduction",
-  "getting-started": "Getting Started",
-  "build": "Build",
-  "publish-and-deploy": "Publish and Deploy",
-  "cli": "CLI",
-  "ui": "@companydotcom/ui"
+  "index": {
+    "title": "Introduction"
+  },
+  "getting-started": {
+    "title": "Getting Started"
+  },
+  "build": {
+    "title": "Build"
+  },
+  "publish-and-deploy": {
+    "title": "Publish and Deploy"
+  },
+  "cli": {
+    "title": "CLI"
+  },
+  "ui": {
+    "title": "@companydotcom/ui"
+  }
 }

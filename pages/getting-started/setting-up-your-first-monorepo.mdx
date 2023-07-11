@@ -1,0 +1,78 @@
+# Setting Up Your First Monorepo
+
+import { Callout, Tabs, Tab } from 'nextra-theme-docs'
+
+
+To create a new Wave monorepo, use our [create-wave-app](https://www.npmjs.com/package/create-wave-app) npm package.
+
+<Callout type="warning" emoji="⚠️">
+    Note that to properly deploy your Wave app, and access certain features, you need a verified Vastly account previously set up by one of our team members. Contact us if you are having problems.
+</Callout>
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab>
+    ```bash copy filename="terminal"
+    pnpx create-wave-app
+    ```
+  </Tab>
+  <Tab>
+    ```bash copy filename="terminal"
+    npx create-wave-app
+    ```
+  </Tab>
+    <Tab>
+    ```bash copy filename="terminal"
+    yarn global add create-wave-app
+    ```
+  </Tab>
+</Tabs>
+
+Refer to [Setting Up Your First Monorepo](/getting-started/setting-up-your-first-monorepo) guide for more.
+
+## CLI
+
+We also provide a custom [CLI](https://www.npmjs.com/package/@vastly/cli) to help build your Wave app.  You can install it globally or just inside your generated Wave app with your preferred package manager.
+
+### Install Globally
+
+A global install of the CLI allows you to use it in any generated Wave app.
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab>
+    ```bash copy filename="terminal"
+    pnpm install -g @vastly/cli
+    ```
+  </Tab>
+  <Tab>
+    ```bash copy filename="terminal"
+    npm install -g @vastly/cli
+    ```
+  </Tab>
+   <Tab>
+    ```bash copy filename="terminal"
+    yarn global add @vastly/cli
+    ```
+  </Tab>
+</Tabs>
+
+### Install Per Repository
+
+If you work on a Wave app with other developers, you may want to pin the CLI version by installing it as a dev dependency.
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab>
+    ```bash copy filename="terminal"
+    pnpm add @vastly/cli --save-dev --ignore-workspace-root-check
+    ```
+  </Tab>
+  <Tab>
+    ```bash copy filename="terminal"
+    npm install @vastly/cli --dev
+    ```
+  </Tab>
+   <Tab>
+    ```bash copy filename="terminal"
+    yarn add @vastly/cli --dev --ignore-workspace-root-check
+    ```
+  </Tab>
+</Tabs>
