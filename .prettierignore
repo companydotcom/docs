@@ -3,5 +3,6 @@ out/
 dist/
 
 # bellow files are broken since prettier doesn't support MDX2
+pages/_app.mdx
 pages/index.mdx
 pages/getting-started/setting-up-your-first-monorepo.mdx
