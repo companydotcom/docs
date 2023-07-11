@@ -2,6 +2,7 @@ import React from "react"
 import { DocsThemeConfig } from "nextra-theme-docs"
 import { ThemeSwitch } from "./components/theme-switch"
 
+
 const config: DocsThemeConfig = {
   logo: <span>Vastly Docs</span>,
   project: {

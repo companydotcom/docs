@@ -1,13 +1,13 @@
-import { ColorModeScript } from "@vastly/ui"
-import { Html, Head, Main, NextScript } from "next/document"
-import { theme } from "../constants/theme"
+import { ColorModeScript } from "@vastly/ui";
+import { Html, Head, Main, NextScript } from "next/document";
+import { theme } from "./_app";
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang='en'>
       <Head />
       <body>
-        <ColorModeScript storageKey="theme" initialColorMode={theme.config.initialColorMode} />
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <Main />
         <NextScript />
       </body>
