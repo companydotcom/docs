@@ -3,26 +3,26 @@ Learn how to use the Vastly command-line interface (CLI) to configure and manage
 
 ## Vastly CLI Overview
 import { Tab, Tabs } from 'nextra-theme-docs'
-import { Link, SimpleGrid } from '@vastly/ui'
+import { Text, SimpleGrid } from '@vastly/ui'
 
-With the command-line interface (CLI) provided through `create-wave-app`, you can interact with the backend of your application using your terminal. This enables you to <Link href="/cli/login"><u>login</u></Link> and <Link href="/cli/logout"><u>logout</u></Link> of your Vastly account, store and manage <Link href="/cli/env"><u>secrets</u></Link>, <Link href="/cli/generate"><u>generate</u></Link> a microservice or CIAM policies, and more!
+With the command-line interface (CLI) provided through [`create-wave-app`](https://www.npmjs.com/package/create-wave-app), you can interact with the backend of your application using your terminal. This enables you to [login](/cli/login) and [logout](/cli/logout) of your Vastly account, store and manage [env](/cli/env) variables, [generate](/cli/generate) a microservice or CIAM policies, and more!
 
 ## Installing Vastly CLI
 Vastly CLI is included as a dependency of `create-wave-app`, but if you need to install or update:
 
   <Tabs items={['pnpm', 'npm', 'yarn']}>
     <Tab>
-      ```jsx copy
-      pnpm i -g @vastly/cli
+      ```bash copy filename="terminal"
+      pnpx i -g @vastly/cli
       ```
       </Tab>
     <Tab>
-      ```jsx copy
-      npm i -g @vastly/cli
+      ```bash copy filename="terminal"
+      npx i -g @vastly/cli
       ```
     </Tab>
     <Tab>
-      ```jsx copy
+      ```bash copy filename="terminal"
       yarn global add @vastly/cli
       ```
     </Tab>
@@ -30,9 +30,9 @@ Vastly CLI is included as a dependency of `create-wave-app`, but if you need to 
 
 ## Available Commands
 <SimpleGrid columns={2} spacing={10} mt={10}>
-  <Link href="/cli/env">- env</Link>
-  <Link href="/cli/generate">- generate</Link>
-  <Link href="/cli/login">- login</Link>
-  <Link href="/cli/logout">- logout</Link>
-  <Link href="/cli/whoami">- whoami</Link>
+  <Text>[- env](/cli/env)</Text>
+  <Text>[- generate](/cli/generate)</Text>
+  <Text>[- login](/cli/login)</Text>
+  <Text>[- logout](/cli/logout)</Text>
+  <Text>[- whoami](/cli/whoami)</Text>
 </SimpleGrid>
