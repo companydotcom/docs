@@ -6,11 +6,13 @@ The `vastly whoami` command is used to show the username (email) and session tok
 <br/>
 
 # Usage
-<Callout type="warning">
-You will not be able to login unless you've signed up for a Vastly account
-</Callout>
   ```bash copy filename="terminal"
   vastly whoami
+  ```
+
+  Use the `--token` flag to return only the current token
+    ```bash copy filename="terminal"
+  vastly whoami --token
   ```
   ## Global Options
   The following options can be passed when using `vastly whoami` command:
