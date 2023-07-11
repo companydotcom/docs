@@ -1,0 +1,15 @@
+import { useEffect } from "react"
+import { UiProvider, useColorMode, createLocalStorageManager } from "@vastly/ui"
+import { theme } from "../constants/theme"
+
+
+
+export default function App({ Component, pageProps }) {
+const manager = createLocalStorageManager("theme");
+
+  return (
+    <UiProvider colorModeManager={manager} theme={theme}>
+      <Component {...pageProps} />
+    </UiProvider>
+  )
+}
