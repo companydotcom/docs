@@ -1,0 +1,103 @@
+# Next.js Framework
+
+import { SimpleGrid } from "@vastly/ui"
+import { Callout, Tabs, Tab } from "nextra-theme-docs"
+import { FileTree } from "nextra/components"
+import { LinkCard } from "@components/info-card"
+
+Every [Wave app](/getting-started/setting-up-your-first-monorepo) gets generated with a default
+framework called [Next.js](https://nextjs.org/).
+
+## Next.js
+
+Next.js is a popular React framework for building server-side rendered (SSR) and static websites. It
+provides a powerful set of features and optimizations that can greatly enhance the development
+experience and performance of your front-end application.
+
+We won't go over every single aspect of the Next.js framework here, but have provided some handy
+links and descriptions of some of the features that you will want to be familiar with while building
+with Wave.
+
+<SimpleGrid columns={[1, 2]} gap="4" pt="6">
+  <LinkCard
+    heading="Learn Next.js"
+    description="Begin here if you are completely unfamiliar with the Next.js framework"
+    link="https://nextjs.org/learn/foundations/about-nextjs"
+    isExternal
+  />
+</SimpleGrid>
+
+## Features
+
+### Routing
+
+Next.js uses a
+[file based routing system](https://nextjs.org/docs/app/building-your-application/routing).
+
+<Callout>
+  Note that Next.js has two strategies around defining routes, the `/app` folder and the `/pages`
+  folder. Refer to their docs for the differences.
+</Callout>
+
+At a high level, what this means is that either of these folder structures:
+
+<Tabs items={["app folder", "pages folder"]}>
+  <Tab>
+    <FileTree>
+      <FileTree.Folder name="app" defaultOpen>
+        <FileTree.Folder name="dashboard" defaultOpen>
+          <FileTree.File name="layout.tsx" />
+          <FileTree.Folder name="settings" defaultOpen>
+            <FileTree.File name="page.tsx" />
+          </FileTree.Folder>
+          <FileTree.Folder name="profile" defaultOpen>
+            <FileTree.File name="page.tsx" />
+          </FileTree.Folder>
+        </FileTree.Folder>
+      </FileTree.Folder>
+    </FileTree>
+  </Tab>
+  <Tab>
+    <FileTree>
+      <FileTree.Folder name="pages" defaultOpen>
+        <FileTree.Folder name="dashboard" defaultOpen>
+          <FileTree.File name="settings.tsx" />
+          <FileTree.File name="profile.tsx" />
+        </FileTree.Folder>
+      </FileTree.Folder>
+    </FileTree>
+  </Tab>
+</Tabs>
+
+Would result in two routes being generated on your frontend `/dashboard/settings` and
+`/dashboard/profile`.
+
+### Pages and Layouts
+
+Note in the above project structure the `layout.tsx` file. In Next.js, when you use the `app` folder
+structure to generate pages, you can make shareable layout components. This is useful for things
+like adding a navbar and footer to every single page, or switching content composition between for
+example a blog post versus a dashboard. Each `layout.tsx` file is required to render a `children`
+prop.
+
+For more information on how `layout.tsx` files work, check out the
+[docs here](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts).
+
+There are also many different file conventions that handle different responsibilities, such as
+loading states and errr pages. Find out more
+[here](https://nextjs.org/docs/app/api-reference/file-conventions).
+
+### Data Fetching
+
+Data fetching is a big and complex topic, but Next.js has several simple ways to make populating
+your Wave app with content an easy-to-understand experience.
+[This page](https://nextjs.org/docs/app/building-your-application/data-fetching) will go through the
+fundamental concepts and patterns to help you manage your data's lifecycle.
+
+### Internationalization
+
+Internationalization of your content is enabled out of the box with Next.js. Several strategies for
+fetching and storing all of your language dictionaries are layed out
+[here](https://nextjs.org/docs/app/building-your-application/routing/internationalization).
+
+{/* ### Resources */}
