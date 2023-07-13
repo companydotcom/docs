@@ -1,0 +1,143 @@
+# Microservices
+import { OrderedList, ListItem, Text, SimpleGrid } from '@vastly/ui'
+import { Tab, Tabs, Callout } from 'nextra-theme-docs'
+import { LinkCard } from "@components/info-card"
+
+## What is a microservice?
+A microservice is a self-contained, independent component within a larger software application, designed to perform a specific business functionality. It follows the principle of breaking down an application into smaller, loosely coupled services that can be developed, deployed, and scaled independently. Each microservice typically runs in its own process and communicates with other services. This architectural approach allows for better scalability, flexibility, and fault isolation, as well as enabling teams to work on different microservices simultaneously, promoting faster development and deployment cycles.
+
+With the [Vastly CLI](https://www.npmjs.com/package/@vastly/cli), you can [generate](/cli/generate), manage, and deploy one or many microservices for your front-end application in just a few steps.
+
+## Usage
+The generated microservice consists of three main elements:
+<OrderedList>
+<ListItem>A versatile RDS configuration that supports PostgreSQL, MySQL, SQLite, MongoDB, CockRoachDB, and Microsoft SQL Server</ListItem>
+ <ListItem>A ready-to-use GraphQL API template</ListItem>
+ <ListItem>An easy deployment method to AWS AppSync.</ListItem>
+</OrderedList>
+
+```bash copy filename="terminal"
+vastly generate service
+```
+Run the `vastly generate service` command in the root of your project. A `services` directory will be populated with your new microservice along with a few tools for your backend architecture. While we provide tools that are somewhat opinionated, you are more than welcome to customize your backend architecture.
+
+### Folder Structure
+<Tabs items={["services folder", "apps folder"]}>
+<Tab>
+```bash {1-8}
+serviceName/
+  |__ handler.ts  # lambda function handler (API resolver)
+  |__ server.ts   # local server (for dev)
+  |__ cdk/        # AWS CDK deploy boilerplate
+  |__ prisma/
+    |__ schema.prisma  # prisma schema (data source)
+    |__ generated/     # auto-generated after each `npx prisma generate`
+  |_ package.json
+|__ README.md
+```
+</Tab>
+<Tab>
+```bash {2, 5-6}
+client/
+  |__ graphql/  # auto-generated api (queries, mutations, types) after each `generate` script
+  |__ pages/  # front-end application
+  |__ .eslintrc.json
+  |__ apollo.tsx  # configuration template for connecting your api to AWS AppSync (Apollo Client)
+  |__ codegen.ts  # configuration file for graphql code generation
+  |__ next.config.js
+  |__ package.json
+  |__ tsconfig.json
+```
+</Tab>
+</Tabs>
+### Tools
+By default, you'll be provided with Prisma.io and it's extension, Prisma AppSync. Prisma.io is a type-safe database toolkit that simplifies access and management, while Prisma Appsync is a plugin that integrates Prisma with AWS AppSync.
+
+<SimpleGrid columns={[1, 2]} gap="4" pt="6">
+  <LinkCard
+    heading="Learn Prisma"
+    description="Begin here if you are completely unfamiliar with the Prisma ORM"
+    link="https://www.prisma.io/docs/concepts/overview/what-is-prisma"
+    isExternal
+  />
+  <LinkCard
+  heading="Learn Prisma Appsync"
+  description="Learn how Prisma Appsync seamlessly connects your API to AWS Appsync"
+  link="https://prisma-appsync.vercel.app/quick-start/getting-started.html"
+  isExternal
+/>
+</SimpleGrid>
+
+### Scripts
+#### <Text as='kbd' fontSize='xl'>generate</Text>
+Navigate into your microservice directory to run these scripts.
+After each `generate`, files inside `prisma/generated` will be auto-generated. Creates the client, schema (from `/schema.prisma`), resolvers, and models mapping
+  <Tabs items={['pnpm', 'npm', 'yarn']}>
+    <Tab>
+      ```bash copy filename="services/[serviceName]"
+      pnpm generate
+      ```
+      </Tab>
+    <Tab>
+      ```bash copy filename="services/[serviceName]"
+      npm run generate
+      ```
+    </Tab>
+    <Tab>
+      ```bash copy filename="services/[serviceName]"
+      yarn run generate
+      ```
+    </Tab>
+  </Tabs>
+
+#### <Text as='kbd' fontSize='xl'>dev</Text>
+Run the local server, default database is SQLite
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab>
+    ```bash copy filename="services/[serviceName]"
+    pnpm dev
+    ```
+    </Tab>
+  <Tab>
+    ```bash copy filename="services/[serviceName]"
+    npm run dev
+    ```
+  </Tab>
+  <Tab>
+    ```bash copy filename="services/[serviceName]"
+    yarn run dev
+    ```
+  </Tab>
+</Tabs>
+
+#### <Text as='kbd' fontSize='xl'>deploy</Text>
+Prerequisite:
+  - You need to setup your AWS credentials and your database. You can use any [compatible database](https://www.prisma.io/docs/concepts/database-connectors). Be sure you check the `README.md` in your `services/` directory for more information!
+  - [Docker](https://docs.docker.com/get-docker/)
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab>
+    ```bash copy filename="services/[serviceName]"
+    pnpm deploy
+    ```
+    </Tab>
+  <Tab>
+    ```bash copy filename="services/[serviceName]"
+    npm run deploy
+    ```
+  </Tab>
+  <Tab>
+    ```bash copy filename="services/[serviceName]"
+    yarn run deploy
+    ```
+  </Tab>
+</Tabs>
+<Callout>
+  TIP: You can securely store your `DATABASE_URL` using the `env` command from the [Vastly CLI](/cli/env)!
+</Callout>
+
+
+## References
+- [Prisma Quick Start for Relational DB](https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases-typescript-postgresql)
+- [Prisma Quick Start for MongoDB](https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project)
+- [Prisma-Appsync](https://prisma-appsync.vercel.app/quick-start/getting-started.html)
+- [Database Reference](https://www.prisma.io/docs/reference/database-reference/connection-urls)
