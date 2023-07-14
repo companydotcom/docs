@@ -21,6 +21,7 @@
     "@types/mdx": "^2.0.5",
     "@vastly/forms": "^0.4.0",
     "@vastly/ui": "^0.4.0",
+    "clsx": "^1.2.1",
     "next": "^13.4.9",
     "nextra": "^2.9.0",
     "nextra-theme-docs": "^2.9.0",
