@@ -9,11 +9,12 @@ A microservice is a self-contained, independent component within a larger softwa
 With the [Vastly CLI](https://www.npmjs.com/package/@vastly/cli), you can [generate](/cli/generate), manage, and deploy one or many microservices for your front-end application in just a few steps.
 
 ## Usage
-The generated microservice consists of three main elements:
+The generated microservice consists of four main elements:
 <OrderedList>
 <ListItem>A versatile RDS configuration that supports PostgreSQL, MySQL, SQLite, MongoDB, CockRoachDB, and Microsoft SQL Server</ListItem>
  <ListItem>A ready-to-use GraphQL API template</ListItem>
- <ListItem>An easy deployment method to AWS AppSync.</ListItem>
+ <ListItem>An easy deployment method to your AWS account, using AWS AppSync CDK and Docker</ListItem>
+  <ListItem>A set of auto-generated front-end query and mutation hooks, using `/schema.prisma`</ListItem>
 </OrderedList>
 
 ```bash copy filename="terminal"
@@ -72,12 +73,7 @@ By default, you'll be provided with Prisma.io and its extension, Prisma AppSync.
 #### <Text as='kbd' fontSize='xl'>generate</Text>
 Navigate into your microservice directory to run these scripts.
 After each `generate`, files inside `prisma/generated` will be auto-generated. Creates the client, schema (from `/schema.prisma`), resolvers, and models mapping
-  <Tabs items={['pnpm', 'npm', 'yarn']}>
-    <Tab>
-      ```bash copy filename="services/[serviceName]"
-      pnpm generate
-      ```
-      </Tab>
+  <Tabs items={['npm', 'yarn']}>
     <Tab>
       ```bash copy filename="services/[serviceName]"
       npm run generate
@@ -92,12 +88,7 @@ After each `generate`, files inside `prisma/generated` will be auto-generated. C
 
 #### <Text as='kbd' fontSize='xl'>dev</Text>
 Run the local server, default database is SQLite
-<Tabs items={['pnpm', 'npm', 'yarn']}>
-  <Tab>
-    ```bash copy filename="services/[serviceName]"
-    pnpm dev
-    ```
-    </Tab>
+<Tabs items={['npm', 'yarn']}>
   <Tab>
     ```bash copy filename="services/[serviceName]"
     npm run dev
@@ -114,12 +105,7 @@ Run the local server, default database is SQLite
 Prerequisite:
   - You need to setup your AWS credentials and your database. You can use any [compatible database](https://www.prisma.io/docs/concepts/database-connectors). Be sure you check the `README.md` for more information!
   - [Docker](https://docs.docker.com/get-docker/)
-<Tabs items={['pnpm', 'npm', 'yarn']}>
-  <Tab>
-    ```bash copy filename="services/[serviceName]"
-    pnpm deploy
-    ```
-    </Tab>
+<Tabs items={['npm', 'yarn']}>
   <Tab>
     ```bash copy filename="services/[serviceName]"
     npm run deploy

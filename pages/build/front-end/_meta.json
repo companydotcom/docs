@@ -1,5 +1,11 @@
 {
-    "frameworks": "Frameworks",
-    "authentication": "Authentication",
-    "ui": "UI"
+    "frameworks": {
+        "title": "Frameworks"
+    },
+    "authentication": {
+        "title": "Authentication"
+    },
+    "ui": {
+        "title": "UI"
+    }
 }

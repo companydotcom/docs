@@ -1,0 +1,34 @@
+# Design System
+
+import { SimpleGrid } from "@vastly/ui"
+import { LinkCard } from "@components/info-card"
+
+A design system is a comprehensive set of guidelines, standards, and reusable components that
+provide a unified and consistent framework for designing and building digital products. It serves as
+a central resource for designers, developers, and other stakeholders, offering a shared language and
+established patterns to streamline the creation process.
+
+To use a design system effectively, designers and developers refer to its documentation, which
+outlines the principles, rules, and best practices for creating interfaces. They leverage the
+system's pre-designed components, such as buttons, typography styles, and icons, to ensure visual
+and functional consistency across different screens and platforms.
+
+Design systems are crucial for several reasons. Firstly, they promote efficiency and collaboration
+by eliminating redundant design and development work. Secondly, they establish a cohesive user
+experience, enhancing usability and familiarity for users across various products and touchpoints.
+Thirdly, they facilitate scalability and maintenance, as updates and improvements can be implemented
+systematically. Lastly, design systems reinforce brand identity, as they encapsulate the visual and
+interactive elements that define an organization's unique style and values.
+
+<SimpleGrid columns={[1, 2]} gap="4" pt="6">
+  <LinkCard
+    heading="Theme"
+    description="Start building a new app using Wave"
+    link="/getting-started/setting-up-your-first-monorepo"
+  />
+  <LinkCard
+    heading="Components"
+    description="Make sure you are set up to deploy your stack"
+    link="/getting-started/how-to-get-aws-credentials"
+  />
+</SimpleGrid>
