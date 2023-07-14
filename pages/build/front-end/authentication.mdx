@@ -1,1 +1,109 @@
 # Authentication
+
+import { Callout, Steps } from "nextra/components"
+import { LinkCard, LinkCards } from '@components/link-card'
+
+Want to quickly create a secure customer identity and access management service seamlessly? Vastly
+has you covered. Built using [Amazon Cognito](https://aws.amazon.com/cognito/) and
+[NextAuth](https://next-auth.js.org/), we aim to make it trivial to bootstrap your auth experience
+and secure your app routes.
+
+<Callout>Ensure you have the [Vasly CLI](/cli) installed on your machine.</Callout>
+
+## Generating your cIAM
+
+<Steps>
+### Step 1
+
+Run the `vastly generate ciam` command from the root of your monorepo.
+  ```bash copy filename="terminal"
+  vastly generate ciam
+  ```
+
+### Step 2
+
+The CLI will ask you which auth provider you would like to use. For now, we only support
+[Amazon Cognito](https://aws.amazon.com/cognito/), but hope to support more options in the near
+future. Choose AWS Cognito for now.
+
+### Step 3
+
+At this step, Wave automatically generates some boilerplate code for you to easily modify or configure as needed.
+
+- In the entry point to your app (typically `_app.tsx` in a Next.js app), a new React provider is
+  imported and added - `<SessionProvider>`. This comes from the
+  [NextAuth](https://next-auth.js.org/) package and ensures you can use their built in hooks that
+  handle various responsbilities like user and session data.
+
+```jsx copy filename="_app.tsx"
+export default function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  return (
+    <UiProvider>
+      <ApolloWrapper>
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
+      </ApolloWrapper>
+    </UiProvider>
+  );
+}
+```
+
+- An `api` folder will be created under your `pages` directory, with a new `auth/[...nextauth].js` file.
+
+This file sets up a small api, that lives directly in your app, and wires up that API with your selected auth provider (in this case, AWS Cognito).
+
+<Callout type="warning" emoji="⚠️">
+    To get these variables, you need to have an AWS Cognito UserPool setup on your AWS account already.
+</Callout>
+
+```jsx copy filename="[...nextauth].tsx"
+import NextAuth from "next-auth";
+import CognitoProvider from "next-auth/providers/cognito";
+
+export const authOptions = {
+  providers: [
+    CognitoProvider({
+      clientId: "",
+      clientSecret: "",
+      issuer: "",
+    }),
+  ],
+  secret: "",
+};
+
+export default NextAuth(authOptions);
+```
+
+- Two sample pages are also generated for your benefit, `login.tsx` and a `restricted.tsx`.
+
+The `login.tsx` page demonstrates how to easily use the [NextAuth]() API's to grab a users session,
+sign the user into your app, or sign them out.
+
+The `restricted.tsx` page demostrates how to get a users session status, and deny them access to
+page, created a secure route.
+
+If you don't require any of these templates, feel free to delete or modify them!
+
+</Steps>
+
+
+For more information on what is possible with NextAuth, check out their user docs [here](https://next-auth.js.org/providers/).
+
+
+## Resources
+
+<LinkCards>
+  <LinkCard
+    heading="AWS Cognito"
+    description="Implement secure, frictionless customer identity and access management that scales"
+    link="https://aws.amazon.com/cognito/"
+    isExternal
+  />
+  <LinkCard
+    heading="NextAuth"
+    description="Add authentication in minutes"
+    link="https://next-auth.js.org/"
+    isExternal
+  />
+</LinkCards>

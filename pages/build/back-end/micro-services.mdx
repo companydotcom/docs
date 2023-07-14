@@ -1,7 +1,7 @@
 # Microservices
-import { OrderedList, ListItem, Text, SimpleGrid } from '@vastly/ui'
+import { OrderedList, ListItem, Text } from '@vastly/ui'
 import { Tab, Tabs, Callout } from 'nextra-theme-docs'
-import { LinkCard } from "@components/info-card"
+import { LinkCard, LinkCards } from "@components/link-card"
 
 ## What is a microservice?
 A microservice is a self-contained, independent component within a larger software application, designed to perform a specific business functionality. It follows the principle of breaking down an application into smaller, loosely coupled services that can be developed, deployed, and scaled independently. Each microservice typically runs in its own process and communicates with other services. This architectural approach allows for better scalability, flexibility, and fault isolation, as well as enabling teams to work on different microservices simultaneously, promoting faster development and deployment cycles.
@@ -12,8 +12,8 @@ With the [Vastly CLI](https://www.npmjs.com/package/@vastly/cli), you can [gener
 The generated microservice consists of four main elements:
 <OrderedList>
 <ListItem>A versatile RDS configuration that supports PostgreSQL, MySQL, SQLite, MongoDB, CockRoachDB, and Microsoft SQL Server</ListItem>
- <ListItem>A ready-to-use GraphQL API template</ListItem>
- <ListItem>An easy deployment method to your AWS account, using AWS AppSync CDK and Docker</ListItem>
+  <ListItem>A ready-to-use GraphQL API template</ListItem>
+  <ListItem>An easy deployment method to your AWS account, using AWS AppSync CDK and Docker</ListItem>
   <ListItem>A set of auto-generated front-end query and mutation hooks, using `/schema.prisma`</ListItem>
 </OrderedList>
 
@@ -54,7 +54,7 @@ client/
 ### Tools
 By default, you'll be provided with Prisma.io and it's extension, Prisma AppSync. Prisma.io is a type-safe database toolkit that simplifies access and management, while Prisma Appsync is a plugin that integrates Prisma with AWS AppSync.
 
-<SimpleGrid columns={[1, 2]} gap="4" pt="6">
+<LinkCards>
   <LinkCard
     heading="Learn Prisma"
     description="Begin here if you are completely unfamiliar with the Prisma ORM"
@@ -67,7 +67,7 @@ By default, you'll be provided with Prisma.io and it's extension, Prisma AppSync
   link="https://prisma-appsync.vercel.app/quick-start/getting-started.html"
   isExternal
 />
-</SimpleGrid>
+</LinkCards>
 
 ### Scripts
 #### <Text as='kbd' fontSize='xl'>generate</Text>

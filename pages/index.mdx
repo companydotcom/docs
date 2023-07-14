@@ -1,8 +1,7 @@
 # Wave Docs
 
 import { Callout, Tabs, Tab } from 'nextra-theme-docs'
-import { SimpleGrid } from '@vastly/ui'
-import { LinkCard } from '@components/info-card'
+import { LinkCards, LinkCard } from '@components/link-card'
 
 Learn how you can integrate APIs and build backends and frontends with Wave.
 
@@ -12,10 +11,19 @@ Learn how you can integrate APIs and build backends and frontends with Wave.
 
 ## Quickstart
 
-<SimpleGrid columns={[1, 2]} gap="4" pt="6">
-  <LinkCard heading="Setting Up Your Monorepo" description="Start building a new app using Wave" link="/getting-started/setting-up-your-first-monorepo" />
-  <LinkCard heading="Retrieve your AWS credentials" description="Make sure you are set up to deploy your stack" link="/getting-started/how-to-get-aws-credentials" />
-</SimpleGrid>
+<LinkCards>
+  <LinkCard
+    heading="Setting Up Your Monorepo"
+    description="Start building a new app using Wave"
+    link="/getting-started/setting-up-your-first-monorepo"
+  />
+  <LinkCard
+    heading="Retrieve your AWS credentials"
+    description="Make sure you are set up to deploy your stack"
+    link="/getting-started/how-to-get-aws-credentials"
+  />
+</LinkCards>
+
 
 {/* ## Features
 

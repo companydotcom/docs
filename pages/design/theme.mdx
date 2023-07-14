@@ -1,7 +1,6 @@
 # Theme
 
-import { SimpleGrid } from "@vastly/ui"
-import { LinkCard } from "@components/info-card"
+import { LinkCard, LinkCards } from "@components/link-card"
 
 Themes are used to modify existing components to fit a specific visual style. By using Carbon’s
 tokens, developers can easily customize all of their components by changing a set of universal
@@ -40,7 +39,7 @@ Spacing is the negative area between elements and components. It is commonly con
 margin and padding . Carbon offers several methods such as tokens and layout components to make
 implementing spacing in product easier and more consistent.
 
-<SimpleGrid columns={[1, 2]} gap="4" pt="6">
+<LinkCards>
   <LinkCard
     heading="Design System"
     description="Overview of the Potion Design System"
@@ -51,4 +50,4 @@ implementing spacing in product easier and more consistent.
     description="Learn about how components are used"
     link="/getting-started/how-to-get-aws-credentials"
   />
-</SimpleGrid>
+</LinkCards>
