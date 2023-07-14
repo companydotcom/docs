@@ -1,9 +1,8 @@
 # Next.js Framework
 
-import { SimpleGrid } from "@vastly/ui"
 import { Callout, Tabs, Tab } from "nextra-theme-docs"
 import { FileTree } from "nextra/components"
-import { LinkCard } from "@components/info-card"
+import { LinkCard, LinkCards } from "@components/link-card"
 
 Every [Wave app](/getting-started/setting-up-your-first-monorepo) gets generated with a default
 framework called [Next.js](https://nextjs.org/).
@@ -18,14 +17,14 @@ We won't go over every single aspect of the Next.js framework here, but have pro
 links and descriptions of some of the features that you will want to be familiar with while building
 with Wave.
 
-<SimpleGrid columns={[1, 2]} gap="4" pt="6">
+<LinkCards>
   <LinkCard
     heading="Learn Next.js"
     description="Begin here if you are completely unfamiliar with the Next.js framework"
     link="https://nextjs.org/learn/foundations/about-nextjs"
     isExternal
   />
-</SimpleGrid>
+</LinkCards>
 
 ## Features
 
@@ -41,7 +40,17 @@ Next.js uses a
 
 At a high level, what this means is that either of these folder structures:
 
-<Tabs items={["app folder", "pages folder"]}>
+<Tabs items={["pages folder", "app folder"]}>
+  <Tab>
+    <FileTree>
+      <FileTree.Folder name="pages" defaultOpen>
+        <FileTree.Folder name="dashboard" defaultOpen>
+          <FileTree.File name="settings.tsx" />
+          <FileTree.File name="profile.tsx" />
+        </FileTree.Folder>
+      </FileTree.Folder>
+    </FileTree>
+  </Tab>
   <Tab>
     <FileTree>
       <FileTree.Folder name="app" defaultOpen>
@@ -53,16 +62,6 @@ At a high level, what this means is that either of these folder structures:
           <FileTree.Folder name="profile" defaultOpen>
             <FileTree.File name="page.tsx" />
           </FileTree.Folder>
-        </FileTree.Folder>
-      </FileTree.Folder>
-    </FileTree>
-  </Tab>
-  <Tab>
-    <FileTree>
-      <FileTree.Folder name="pages" defaultOpen>
-        <FileTree.Folder name="dashboard" defaultOpen>
-          <FileTree.File name="settings.tsx" />
-          <FileTree.File name="profile.tsx" />
         </FileTree.Folder>
       </FileTree.Folder>
     </FileTree>

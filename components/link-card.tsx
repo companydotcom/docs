@@ -1,4 +1,15 @@
-import { Card, CardHeader, CardBody, Heading, Text, LinkBox, LinkOverlay } from "@vastly/ui"
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Heading,
+  Text,
+  LinkBox,
+  LinkOverlay,
+  useColorModeValue,
+  SimpleGridProps,
+  SimpleGrid
+} from "@vastly/ui"
 import NextLink from "next/link"
 
 interface InfoCardProps {
@@ -9,9 +20,20 @@ interface InfoCardProps {
 }
 
 export const LinkCard = ({ heading, description, link, isExternal = false }: InfoCardProps) => {
+  const bg = useColorModeValue("gray.50", "gray.600")
+
   return (
     <LinkBox as="article">
-      <Card>
+      <Card
+        transitionDuration=".2s"
+        transitionProperty="all"
+        transitionTimingFunction="cubic-bezier(.4,0,.2,1)"
+        _hover={{
+          boxShadow: "md",
+          bg
+        }}
+        height="full"
+      >
         <CardHeader>
           <Heading size="md">
             <LinkOverlay as={isExternal ? undefined : NextLink} href={link} isExternal={isExternal}>
@@ -24,5 +46,13 @@ export const LinkCard = ({ heading, description, link, isExternal = false }: Inf
         </CardBody>
       </Card>
     </LinkBox>
+  )
+}
+
+export const LinkCards = ({ children, ...rest }: SimpleGridProps) => {
+  return (
+    <SimpleGrid columns={[1, 2]} gap="4" pt="6" {...rest}>
+      {children}
+    </SimpleGrid>
   )
 }

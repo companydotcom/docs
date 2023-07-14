@@ -1,7 +1,7 @@
 # Microservices
+import { OrderedList, ListItem, Text } from '@vastly/ui'
 import { Tab, Tabs, Callout } from 'nextra-theme-docs'
-import { OrderedList, ListItem, Text, SimpleGrid } from '@vastly/ui'
-import { LinkCard } from "@components/info-card"
+import { LinkCard, LinkCards } from "@components/link-card"
 import { FileTree, Folder, File } from "@components/index"
 
 ## What is a microservice?
@@ -12,11 +12,19 @@ With the [Vastly CLI](https://www.npmjs.com/package/@vastly/cli), you can [gener
 ## Usage
 The generated microservice consists of four main elements:
 <OrderedList>
-<ListItem>A versatile RDS configuration that supports PostgreSQL, MySQL, SQLite, MongoDB, CockRoachDB, and Microsoft SQL Server</ListItem>
- <ListItem>A ready-to-use GraphQL API template</ListItem>
- <ListItem>An easy deployment method to your Vastly account, using AWS AppSync CDK and Docker</ListItem>
-  <ListItem>A set of auto-generated front-end query and mutation hooks, using `/schema.prisma`</ListItem>
+  <ListItem>
+    A versatile RDS configuration that supports PostgreSQL, MySQL, SQLite, MongoDB, CockRoachDB, and
+    Microsoft SQL Server
+  </ListItem>
+  <ListItem>A ready-to-use GraphQL API template</ListItem>
+  <ListItem>
+    An easy deployment method to your Vastly account, using AWS AppSync CDK and Docker
+  </ListItem>
+  <ListItem>
+    A set of auto-generated front-end query and mutation hooks, using `/schema.prisma`
+  </ListItem>
 </OrderedList>
+
 
 ```bash copy filename="terminal"
 vastly generate service
@@ -25,45 +33,62 @@ Run the `vastly generate service` command in the root of your project. A `servic
 
 ### Folder Structure
 <Tabs items={["services folder", "apps folder"]}>
-<Tab>
-  <FileTree>
-    <Folder name="apps" />
-    <Folder name="services" defaultOpen >
-      <Folder name="serviceName" defaultOpen highlight >
-        <File name="handler.ts" comment="# lambda function handler (API resolver)" highlight/>
-        <File name="server.ts" comment="# local server (for dev)" highlight />
-        <Folder name="cdk" comment="# AWS CDK deploy boilerplate"  highlight />
-        <Folder name="prisma" defaultOpen highlight >
-          <File name="schema.prisma" comment=" # prisma schema (data source)" highlight />
-          <Folder name="generated" comment="# auto-generated after each `npx prisma generate`" highlight />
+  <Tab>
+    <FileTree>
+      <Folder name="apps" />
+      <Folder name="services" defaultOpen>
+        <Folder name="serviceName" defaultOpen highlight>
+          <File name="handler.ts" comment="# lambda function handler (API resolver)" highlight />
+          <File name="server.ts" comment="# local server (for dev)" highlight />
+          <Folder name="cdk" comment="# AWS CDK deploy boilerplate" highlight />
+          <Folder name="prisma" defaultOpen highlight>
+            <File name="schema.prisma" comment=" # prisma schema (data source)" highlight />
+            <Folder
+              name="generated"
+              comment="# auto-generated after each `npx prisma generate`"
+              highlight
+            />
+          </Folder>
+          <File name="package.json" highlight />
         </Folder>
-        <File name="package.json" highlight />
       </Folder>
-    </Folder>
-  </FileTree>
-</Tab>
-<Tab>
-  <FileTree>
-    <Folder name="apps" defaultOpen>
-      <Folder name="client" defaultOpen >
-        <Folder name="graphql" comment="# auto-generated api (queries, mutations, types) after each `generate` script" highlight/>
-        <Folder name="pages" comment="# front-end application" />
-        <File name=".eslintrc.json" />
-        <File name="apollo.tsx" comment="# configuration template for connecting your api to AWS AppSync (Apollo Client)"  highlight />
-        <File name="codegen.ts" comment="# configuration file for graphql code generation" highlight/>
-        <File name="next.config.js" />
-        <File name="package.json" />
-        <File name="tsconfig.json" />
+    </FileTree>
+  </Tab>
+  <Tab>
+    <FileTree>
+      <Folder name="apps" defaultOpen>
+        <Folder name="client" defaultOpen>
+          <Folder
+            name="graphql"
+            comment="# auto-generated api (queries, mutations, types) after each `generate` script"
+            highlight
+          />
+          <Folder name="pages" comment="# front-end application" />
+          <File name=".eslintrc.json" />
+          <File
+            name="apollo.tsx"
+            comment="# configuration template for connecting your api to AWS AppSync (Apollo Client)"
+            highlight
+          />
+          <File
+            name="codegen.ts"
+            comment="# configuration file for graphql code generation"
+            highlight
+          />
+          <File name="next.config.js" />
+          <File name="package.json" />
+          <File name="tsconfig.json" />
+        </Folder>
       </Folder>
-    </Folder>
-    <Folder name="services" />
-  </FileTree>
-</Tab>
+      <Folder name="services" />
+    </FileTree>
+  </Tab>
 </Tabs>
+
 ### Tools
 By default, you'll be provided with Prisma.io and its extension, Prisma AppSync. Prisma.io is a type-safe database toolkit that simplifies access and management, while Prisma Appsync is a plugin that integrates Prisma with AWS AppSync.
 
-<SimpleGrid columns={[1, 2]} gap="4" pt="6">
+<LinkCards>
   <LinkCard
     heading="Learn Prisma"
     description="Begin here if you are completely unfamiliar with the Prisma ORM"
@@ -71,12 +96,12 @@ By default, you'll be provided with Prisma.io and its extension, Prisma AppSync.
     isExternal
   />
   <LinkCard
-  heading="Learn Prisma Appsync"
-  description="Learn how Prisma Appsync seamlessly connects your API to AWS Appsync"
-  link="https://prisma-appsync.vercel.app/quick-start/getting-started.html"
-  isExternal
-/>
-</SimpleGrid>
+    heading="Learn Prisma Appsync"
+    description="Learn how Prisma Appsync seamlessly connects your API to AWS Appsync"
+    link="https://prisma-appsync.vercel.app/quick-start/getting-started.html"
+    isExternal
+  />
+</LinkCards>
 
 ### Scripts
 #### <Text as='kbd' fontSize='xl'>generate</Text>
