@@ -1,7 +1,8 @@
 # Microservices
-import { OrderedList, ListItem, Text, SimpleGrid } from '@vastly/ui'
 import { Tab, Tabs, Callout } from 'nextra-theme-docs'
+import { OrderedList, ListItem, Text, SimpleGrid } from '@vastly/ui'
 import { LinkCard } from "@components/info-card"
+import { FileTree, Folder, File } from "@components/index"
 
 ## What is a microservice?
 A microservice is a self-contained, independent component within a larger software application, designed to perform a specific business functionality. It follows the principle of breaking down an application into smaller, loosely coupled services that can be developed, deployed, and scaled independently. Each microservice typically runs in its own process and communicates with other services. This architectural approach allows for better scalability, flexibility, and fault isolation, as well as enabling teams to work on different microservices simultaneously, promoting faster development and deployment cycles.
@@ -13,7 +14,7 @@ The generated microservice consists of four main elements:
 <OrderedList>
 <ListItem>A versatile RDS configuration that supports PostgreSQL, MySQL, SQLite, MongoDB, CockRoachDB, and Microsoft SQL Server</ListItem>
  <ListItem>A ready-to-use GraphQL API template</ListItem>
- <ListItem>An easy deployment method to your AWS account, using AWS AppSync CDK and Docker</ListItem>
+ <ListItem>An easy deployment method to your Vastly account, using AWS AppSync CDK and Docker</ListItem>
   <ListItem>A set of auto-generated front-end query and mutation hooks, using `/schema.prisma`</ListItem>
 </OrderedList>
 
@@ -25,30 +26,38 @@ Run the `vastly generate service` command in the root of your project. A `servic
 ### Folder Structure
 <Tabs items={["services folder", "apps folder"]}>
 <Tab>
-```bash {1-8}
-serviceName/
-  |__ handler.ts  # lambda function handler (API resolver)
-  |__ server.ts   # local server (for dev)
-  |__ cdk/        # AWS CDK deploy boilerplate
-  |__ prisma/
-    |__ schema.prisma  # prisma schema (data source)
-    |__ generated/     # auto-generated after each `npx prisma generate`
-  |_ package.json
-|__ README.md
-```
+  <FileTree>
+    <Folder name="apps" />
+    <Folder name="services" defaultOpen >
+      <Folder name="serviceName" defaultOpen highlight >
+        <File name="handler.ts" comment="# lambda function handler (API resolver)" highlight/>
+        <File name="server.ts" comment="# local server (for dev)" highlight />
+        <Folder name="cdk" comment="# AWS CDK deploy boilerplate"  highlight />
+        <Folder name="prisma" defaultOpen highlight >
+          <File name="schema.prisma" comment=" # prisma schema (data source)" highlight />
+          <Folder name="generated" comment="# auto-generated after each `npx prisma generate`" highlight />
+        </Folder>
+        <File name="package.json" highlight />
+      </Folder>
+    </Folder>
+  </FileTree>
 </Tab>
 <Tab>
-```bash {2, 5-6}
-client/
-  |__ graphql/  # auto-generated api (queries, mutations, types) after each `generate` script
-  |__ pages/    # front-end application
-  |__ .eslintrc.json
-  |__ apollo.tsx  # configuration template for connecting your api to AWS AppSync (Apollo Client)
-  |__ codegen.ts  # configuration file for graphql code generation
-  |__ next.config.js
-  |__ package.json
-  |__ tsconfig.json
-```
+  <FileTree>
+    <Folder name="apps" defaultOpen>
+      <Folder name="client" defaultOpen >
+        <Folder name="graphql" comment="# auto-generated api (queries, mutations, types) after each `generate` script" highlight/>
+        <Folder name="pages" comment="# front-end application" />
+        <File name=".eslintrc.json" />
+        <File name="apollo.tsx" comment="# configuration template for connecting your api to AWS AppSync (Apollo Client)"  highlight />
+        <File name="codegen.ts" comment="# configuration file for graphql code generation" highlight/>
+        <File name="next.config.js" />
+        <File name="package.json" />
+        <File name="tsconfig.json" />
+      </Folder>
+    </Folder>
+    <Folder name="services" />
+  </FileTree>
 </Tab>
 </Tabs>
 ### Tools
@@ -127,3 +136,4 @@ Prerequisite:
 - [Prisma Quick Start for MongoDB](https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project)
 - [Prisma-Appsync](https://prisma-appsync.vercel.app/quick-start/getting-started.html)
 - [Database Reference](https://www.prisma.io/docs/reference/database-reference/connection-urls)
+- [AWS AppSync CDK](https://www.npmjs.com/package/@aws-cdk/aws-appsync-alpha)
