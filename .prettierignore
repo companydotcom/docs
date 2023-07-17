@@ -6,3 +6,6 @@ dist/
 pages/_app.mdx
 pages/index.mdx
 pages/getting-started/setting-up-your-first-monorepo.mdx
+pages/build/front-end/authentication.mdx
+pages/build/front-end/ui.mdx
+pages/build/back-end/micro-services.mdx

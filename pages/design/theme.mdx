@@ -1,0 +1,53 @@
+# Theme
+
+import { LinkCard, LinkCards } from "@components/link-card"
+
+Themes are used to modify existing components to fit a specific visual style. By using Carbon’s
+tokens, developers can easily customize all of their components by changing a set of universal
+variables, eliminating the need to modify individual components.
+
+## Colors
+
+Each theme is assigned universal color variables, which are determined by common roles and usage.
+This allows for uniform color application across themes while maintaining full styling flexibility.
+
+## Typography
+
+Typography has four categories of type styles (universal, productive, editorial, and additional)
+that can be customized through tokens. These tokens are used both within components and across
+layouts. Type tokens are determined by their role across the system.
+
+## Shadows
+
+Before being a decorative element, shadows were designed to promote user understanding. They bring
+additional information on the interface and more specifically on the targeted component. It can
+indicate possible interactions or reactions triggered by a user's action.
+
+## Radii
+
+The border-radius CSS property rounds the corners of an element's outer border edge. You can set a
+single radius to make circular corners, or two radii to make elliptical corners.
+
+## Breakpoints
+
+A breakpoint is the screen size threshold determined by specific layout requirements. At a given
+breakpoint range, the layout adjusts to suit the screen size and orientation.
+
+## Spacing
+
+Spacing is the negative area between elements and components. It is commonly controlled in code with
+margin and padding . Carbon offers several methods such as tokens and layout components to make
+implementing spacing in product easier and more consistent.
+
+<LinkCards>
+  <LinkCard
+    heading="Design System"
+    description="Overview of the Potion Design System"
+    link="/design/design-system"
+  />
+  <LinkCard
+    heading="Components"
+    description="Learn about how components are used"
+    link="/getting-started/how-to-get-aws-credentials"
+  />
+</LinkCards>

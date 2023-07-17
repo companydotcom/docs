@@ -16,5 +16,8 @@
   },
   "ui": {
     "title": "@companydotcom/ui"
+  },
+  "design": {
+    "title": "Design"
   }
 }
