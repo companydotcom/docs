@@ -14,9 +14,6 @@
   "cli": {
     "title": "CLI"
   },
-  "ui": {
-    "title": "@companydotcom/ui"
-  },
   "design": {
     "title": "Design"
   }
