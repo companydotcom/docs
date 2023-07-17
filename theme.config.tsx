@@ -11,6 +11,11 @@ const config: DocsThemeConfig = {
   footer: {
     text: "Vastly Wave"
   },
+  useNextSeoProps() {
+    return {
+      titleTemplate: "%s – Vastly"
+    }
+  },
   themeSwitch: {
     component(args) {
       return <ThemeSwitch {...args} />
