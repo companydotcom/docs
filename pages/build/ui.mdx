@@ -1,0 +1,240 @@
+# Vastly UI
+
+import { Steps, Callout, Tab, Tabs } from "nextra/components"
+import { LinkCard, LinkCards } from '@components/link-card'
+
+[Vastly UI](https://www.npmjs.com/package/@vastly/ui) is a React component library built on top of
+[Chakra UI](https://chakra-ui.com/) that helps you build products with speed and confidence.
+Utilizing the tooling around themes and design systems that Chakra UI provides, we've built
+additional components that will help you, the creator, make the components you need easily.
+
+Every Vastly UI component is:
+
+- Themeable. Customize all your components to match your brand using theme and style props.
+- Composable. Combine the components to suit your requirements and blend them together to generate
+  unique ones.
+- Productive. Created to minimize repetitive code and ensure type safety, and accelerate your
+  product development process.
+
+## Components
+
+### Vastly UI
+
+With the `@vastly/ui` package, you have access to every single component from
+[Chakra UI](https://chakra-ui.com/) in addition to a lot more we've built on top of their system.
+Some examples include:
+
+- A [Stepper component](https://ui.vastly.is/?path=/docs/components-steppers-labeledstepper--docs)
+  with various options to customize as needed
+- A [Pagination component](https://ui.vastly.is/?path=/docs/components-pagination--docs) to help you
+  easily add pagination to your tables
+
+Plus more on the way!
+
+### Vastly Forms
+
+In addition to core components, we also have a package called `@vastly/forms` that provides several
+helpful, composable components that are powered by the popular [`react-hook-form`](https://react-hook-form.com/) library.
+
+<Callout type="info" emoji="ℹ️">
+  `react-hook-form` is a highly performant and flexible library to help manage all your form state
+  and validation. Read more on how it works [here](https://react-hook-form.com/get-started).
+</Callout>
+
+Vastly Forms exports several components that can plug into your app and eliminate lots of
+boilerplate for you.
+
+To get started, install the `@vastly/forms` package in your client app.
+
+<Tabs items={['npm', 'yarn']}>
+  <Tab>
+    ```bash copy filename="terminal"
+    npm install @vastly/forms
+    ```
+  </Tab>
+  <Tab>
+    ```bash copy filename="terminal"
+    yarn add @vastly/forms
+    ```
+  </Tab>
+</Tabs>
+
+Our custom `<Field />` component,
+for example, lets you easily add traditional form inputs like text boxes and select fields, but also
+some specialized ones like
+
+- A
+  [credit card field](https://ui.vastly.is/?path=/story/@vastly/forms_elements-field--credit-card-input-field)
+  with custom masking
+- A
+  [phone input field](https://ui.vastly.is/?path=/story/@vastly/forms_elements-field--react-phone-input-field)
+  to handle international numbers and proper formatting
+- A
+  [country selector input](https://ui.vastly.is/?path=/story/@vastly/forms_elements-field--select-country-input-field)
+
+Plus [lots more](https://ui.vastly.is/?path=/docs/@vastly/forms_elements-field--docs)!
+
+We also have some custom Form components to easily handle common use cases, such as a Multi-Step Form component, where you may want to collect data in an ordered way.
+
+Simply wrap all your `<Fields />` in the `<StepForm />` component, and seperate your individual screens in a `<FormStep />` wrapper.
+
+```jsx copy filename="step-form.tsx"
+import { Form, Field, StepForm, FormLayout, FormStep, NextButton } from "@vastly/forms";
+
+function Example() => {
+  const defaultValues = {
+    name: "",
+    email: "",
+    password: "",
+  };
+  const onSubmit = (params: typeof defaultValues) => {
+    console.log(params);
+    return new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    });
+  };
+  return (
+    <StepForm defaultValues={defaultValues} onSubmit={onSubmit}>
+      <FormLayout>
+        <FormStep name="profile">
+          <FormLayout>
+            <Field name="name" label="Name" rules={{ required: true }} />
+            <Field name="email" label="Email" rules={{ required: true }} />
+            <NextButton />
+          </FormLayout>
+        </FormStep>
+        <FormStep name="password">
+          <FormLayout>
+            <Field name="password" label="Password" type="password" rules={{ required: true, minLength: *4 }} />
+            <NextButton />
+          </FormLayout>
+        </FormStep>
+      </FormLayout>
+    </StepForm>
+  );
+}
+```
+
+It's that simple. You can use any validation library you like, such as [Zod](https://zod.dev/) or [Yup](https://github.com/jquense/yup).
+
+For more information, be sure to check out the individual component documentation available on our
+[Storybook](https://ui.vastly.is/).
+
+## Customization
+
+Creating an app-wide theme is simple with Vastly UI.
+
+<Steps>
+### Create a custom theme:
+You can create a custom theme by extending the default Vastly UI theme.
+Create a new file, for example, `theme.ts`, and define your custom theme there.
+
+```jsx copy filename="theme.ts"
+import { extendTheme } from '@vastly/ui';
+
+const theme = extendTheme({
+  colors: {
+    // Add your custom colors here
+    brand: {
+      100: '#f7fafc',
+      // ...
+    },
+  },
+  fonts: {
+    // Add your custom fonts here
+    heading: 'Montserrat, sans-serif',
+    // ...
+  },
+  // Add more customizations to your theme if needed
+});
+
+export default theme;
+```
+
+### Use the custom theme:
+Import your custom theme in the root file where you wrapped the UiProvider, and pass it as a
+prop to the UiProvider component.
+
+```jsx copy filename="_app.tsx"
+import type { AppProps } from "next/app";
+import { UiProvider } from "@vastly/ui";
+import theme from './theme';
+
+export default function MyApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
+  return (
+    <UiProvider theme={theme}>
+      <Component {...pageProps} />
+    </UiProvider>
+  );
+}
+```
+
+### Customize component styles:
+Vastly UI allows you to override the default styles of its components using the theme object. For
+example, to customize the style of the Button component, you can define the styles in your custom
+theme file.
+
+```jsx copy filename="theme.ts"
+import { extendTheme } from '@vastly/ui';
+
+const theme = extendTheme({
+  components: {
+    Button: {
+      // Customize the button styles
+      baseStyle: {
+        fontWeight: 'bold',
+        borderRadius: 'md',
+      },
+      // ...
+    },
+  },
+});
+
+export default theme;
+```
+
+### Use the customized component:
+Now you can use the customized component throughout your app, and the custom styles defined in the
+theme will be applied.
+
+```jsx copy filename="component.ts"
+import { Button } from '@vastly/ui';
+
+function MyComponent() {
+  return (
+    <Button colorScheme="brand">Custom Button</Button>
+  );
+}
+```
+
+</Steps>
+
+These steps should help you get started with customizing a theme using Vastly UI. You can explore
+the [Chakra UI documentation](https://chakra-ui.com/) for more advanced customization options and available components.
+
+
+## Resources
+
+<LinkCards>
+  <LinkCard
+    heading="Vastly UI Storybook"
+    description="A public, interactive repository of all the custom components we've built on top of Chakra UI."
+    link="https://ui.vastly.is"
+    isExternal
+  />
+  <LinkCard
+    heading="Chakra UI"
+    description="A simple, modular and accessible component library that gives you the building blocks you need to build your React applications."
+    link="https://chakra-ui.com/"
+    isExternal
+  />
+   <LinkCard
+    heading="react-hook-form"
+    description="Performant, flexible and extensible forms with easy-to-use validation."
+    link="https://react-hook-form.com/"
+    isExternal
+  />
+</LinkCards>

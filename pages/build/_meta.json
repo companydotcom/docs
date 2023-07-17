@@ -1,8 +1,14 @@
 {
-    "front-end": {
-        "title": "Front End"
+    "frameworks": {
+        "title": "Frameworks"
     },
-    "back-end": {
-        "title": "Back End"
+    "authentication": {
+        "title": "Authentication"
+    },
+    "ui": {
+        "title": "UI"
+    },
+    "micro-services": {
+        "title": "Microservices"
     }
 }
