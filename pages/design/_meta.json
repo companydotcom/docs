@@ -7,11 +7,14 @@
     },
     "theme": {
       "title": "Theme"
+        "display": "hidden"
     },
     "components": {
       "title": "Components"
+        "display": "hidden"
     },
     "getting-started-with-figma-templates": {
       "title": "Getting Started with Figma Templates"
+        "display": "hidden"
     }
   }
