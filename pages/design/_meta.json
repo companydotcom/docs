@@ -6,12 +6,15 @@
       "title": "Design System"
     },
     "theme": {
-      "title": "Theme"
+      "title": "Theme",
+        "display": "hidden"
     },
     "components": {
-      "title": "Components"
+      "title": "Components",
+        "display": "hidden"
     },
     "getting-started-with-figma-templates": {
-      "title": "Getting Started with Figma Templates"
+      "title": "Getting Started with Figma Templates",
+        "display": "hidden"
     }
   }
