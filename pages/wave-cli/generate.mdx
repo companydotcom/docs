@@ -1,0 +1,40 @@
+# vastly <em>generate</em>
+
+import { Callout } from "nextra-theme-docs"
+
+The `wave generate` command is used to spin up a microservice (like REST, eda, or streaming service)
+or cIAM service through the [Vastly CLI](/cli).
+
+## SERVICE
+
+create, manage and deploy a full microservice to connect to your customized front-end application.
+
+```bash copy filename="terminal"
+wave generate service
+```
+
+<br />
+
+### REST
+
+<Callout>
+  Be sure to checkout the `README.md` in your `create-wave-app` services directory for more
+  information!
+</Callout>
+Upon generation, you will be supplied with a typed `prisma/appsync` backend with a configurable database
+connection, a generic template graphql schema, as well as some generic resolvers to get you started.
+
+### EDA & streaming
+
+<Callout type="info">Coming soon!</Callout>
+
+<br />
+
+## CIAM
+
+create a secure customer identity and access management service seamlessly. Adds a `SessionProvider`
+wrapper to your `_app.tsx`
+
+```bash copy filename="terminal"
+wave generate ciam
+```
