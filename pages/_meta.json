@@ -5,6 +5,9 @@
   "getting-started": {
     "title": "Getting Started"
   },
+  "guides": {
+    "title": "Guides"
+  },
   "build": {
     "title": "Build"
   },

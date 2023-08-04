@@ -20,6 +20,9 @@ const config: DocsThemeConfig = {
     component(args) {
       return <ThemeSwitch {...args} />
     }
+  },
+  sidebar: {
+    defaultMenuCollapseLevel: 1
   }
 }
 
