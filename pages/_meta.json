@@ -5,14 +5,20 @@
   "getting-started": {
     "title": "Getting Started"
   },
+  "guides": {
+    "title": "Guides"
+  },
   "build": {
     "title": "Build"
   },
   "publish-and-deploy": {
     "title": "Publish and Deploy"
   },
-  "cli": {
-    "title": "CLI"
+  "vastly-cli": {
+    "title": "Vastly CLI"
+  },
+  "wave-cli": {
+    "title": "Wave CLI"
   },
   "design": {
     "title": "Design"

@@ -1,13 +1,17 @@
-# Setting Up Your First Monorepo
+# Setting Up Your First Monorepo With Wave
 
 import { Callout, Tabs, Tab } from 'nextra-theme-docs'
 
+## Installation
 
-To create a new Wave monorepo, use our [create-wave-app](https://www.npmjs.com/package/create-wave-app) npm package.
+To create a new Wave monorepo, use our [create-wave-app](https://www.npmjs.com/package/create-wave-app) package.
 
 <Callout type="warning" emoji="⚠️">
     Note that to properly deploy your Wave app, and access certain features, you need a verified Vastly account previously set up by one of our team members. Contact us if you are having problems.
 </Callout>
+
+After installing your Wave app, take a look at the "readme" file in the root of your monorepo, it has more quickstart guides to try out. 
+For more in depth details about what you can build in a Wave monorepo, check out the [Build](https://docs.vastly.is/build/frameworks) section of these docs.
 
 <Tabs items={['npm', 'yarn']}>
   {/* <Tab>
@@ -17,62 +21,28 @@ To create a new Wave monorepo, use our [create-wave-app](https://www.npmjs.com/p
   </Tab> */}
   <Tab>
     ```bash copy filename="terminal"
-    npx create-wave-app
+    npx create-wave-app@latest
     ```
   </Tab>
-    <Tab>
+  <Tab>
     ```bash copy filename="terminal"
     yarn global add create-wave-app
     ```
-  </Tab>
-</Tabs>
-
-Refer to [Setting Up Your First Monorepo](/getting-started/setting-up-your-first-monorepo) guide for more.
-
-## CLI
-
-We also provide a custom [CLI](https://www.npmjs.com/package/@vastly/cli) to help build your Wave app.  You can install it globally or just inside your generated Wave app with your preferred package manager.
-
-### Install Globally
-
-A global install of the CLI allows you to use it in any generated Wave app.
-
-<Tabs items={['npm', 'yarn']}>
-  {/* <Tab>
+    then run
     ```bash copy filename="terminal"
-    pnpm install -g @vastly/cli
-    ```
-  </Tab> */}
-  <Tab>
-    ```bash copy filename="terminal"
-    npm install -g @vastly/cli
-    ```
-  </Tab>
-   <Tab>
-    ```bash copy filename="terminal"
-    yarn global add @vastly/cli
+    create-wave-app
     ```
   </Tab>
 </Tabs>
 
-### Install Per Repository
+## Wave CLI
 
-If you work on a Wave app with other developers, you may want to pin the CLI version by installing it as a dev dependency.
+Once your monorepo is set up, you can use the Wave CLI to help accelerate building your app. For example, try running `npx wave generate service` to set up your first micro service.
 
-<Tabs items={['npm', 'yarn']}>
-  {/* <Tab>
-    ```bash copy filename="terminal"
-    pnpm add @vastly/cli --save-dev --ignore-workspace-root-check
-    ```
-  </Tab> */}
-  <Tab>
-    ```bash copy filename="terminal"
-    npm install @vastly/cli --dev
-    ```
-  </Tab>
-   <Tab>
-    ```bash copy filename="terminal"
-    yarn add @vastly/cli --dev --ignore-workspace-root-check
-    ```
-  </Tab>
-</Tabs>
+To read more about the capabilities of the Wave CLI, go [here](https://docs.vastly.is/wave-cli)
+
+## Vastly CLI
+
+We also provide our Vastly [CLI](https://www.npmjs.com/package/@vastly/cli) to help you manage your Vastly account, insrastructure, and deployments. You can run the Vastly CLI from within your Wave Monorepo by running `npx vastly`.
+
+To read more about the capabilities of the Vastly CLI, go [here](https://docs.vastly.is/vastly-cli)
