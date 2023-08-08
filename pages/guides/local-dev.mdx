@@ -1,13 +1,15 @@
-import { Steps } from 'nextra/components'
-import { Callout, Tabs, Tab } from 'nextra-theme-docs'
+import { Steps } from "nextra/components"
+import { Callout, Tabs, Tab } from "nextra-theme-docs"
 
 # Local Environment Setup
 
 A tutorial on how to set up your local environment for end to end development and testing.
-## Prerequisites
-- a [generated microservice](/cli/generate) in your [wave](/getting-started/setting-up-your-first-monorepo) monorepo.
-- two terminal windows open
 
+## Prerequisites
+
+- a [generated microservice](/cli/generate) in your
+  [wave](/getting-started/setting-up-your-first-monorepo) monorepo.
+- two terminal windows open
 
 <Steps>
 ### Start your GraphQL Server
@@ -25,41 +27,40 @@ npm run dev
   </Tab>
 </Tabs>
 
-This will start your local GraphQL Server via Yoga as well as load your `schema.prisma` file into a local SQLite database.
+This will start your local GraphQL Server via Yoga as well as load your `schema.prisma` file into a
+local SQLite database.
 
 ### Configure your ApolloClient
+
 Replace your Appsync API url with your local GraphQL Server url inside `apollo.tsx`
+
 ```js {7} filename="/apollo.tsx"
+import React from "react"
+import { createAuthLink, AUTH_TYPE } from "aws-appsync-auth-link"
+import { createSubscriptionHandshakeLink } from "aws-appsync-subscription-link"
+import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink } from "@apollo/client"
 
-import React from "react";
-import { createAuthLink, AUTH_TYPE } from "aws-appsync-auth-link";
-import { createSubscriptionHandshakeLink } from "aws-appsync-subscription-link";
-import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink } from "@apollo/client";
+const url = "http://localhost:4000/graphql" // Appsync API Endpoint URL or Localhost
 
-const url = "http://localhost:4000/graphql"; // Appsync API Endpoint URL or Localhost
-
-const region = ""; // leave blank for local development
+const region = "" // leave blank for local development
 //...
 ```
 
 ### Generate your Types and Frontend Hooks
+
 In your second terminal window, navigate to your frontend app and run:
-<Tabs items={['npm', 'yarn']}>
-  <Tab>
-```bash copy filename="terminal 2"
-npx wave codegen
-```
-  </Tab>
-    <Tab>
-    ```bash copy filename="terminal 2"
-    yarn wave codegen
-    ```
-  </Tab>
+
+<Tabs items={["npm", "yarn"]}>
+  <Tab>```bash copy filename="terminal 2" npx wave codegen ```</Tab>
+  <Tab>```bash copy filename="terminal 2" yarn wave codegen ```</Tab>
 </Tabs>
-This will generate a file called `graphql-types.ts` inside the `apps/client/graphql` directory. Your hooks are at the bottom of this file, equipped with usage information.
+This will generate a file called `graphql-types.ts` inside the `apps/client/graphql` directory. Your
+hooks are at the bottom of this file, equipped with usage information.
 
 ### Start your Frontend App
+
 Still inside your second terminal, run:
+
 <Tabs items={['npm', 'yarn']}>
   <Tab>
 ```bash copy filename="terminal 2"
@@ -79,8 +80,9 @@ You can navigate to your GraphQL localhost in the browser to skip this step
 </Steps>
 
 ## Using Hooks
-After running `npx wave codegen`, you'll have a generated file called `graphql-types.ts`. At the bottom of this file, you'll find your generated hooks. Here's some examples of how to use them.
 
+After running `npx wave codegen`, you'll have a generated file called `graphql-types.ts`. At the
+bottom of this file, you'll find your generated hooks. Here's some examples of how to use them.
 
 ```js filename="graphql-types.ts"
 //...
@@ -115,30 +117,36 @@ export function useListUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 Import your hooks into your app:
 
 ```js copy filename="index.tsx"
-import { Button, Box } from "@vastly/ui";
-import { useCreateUserMutation, useListUsersLazyQuery } from 'graphql/graphql-types';
+import { Button, Container, ButtonGroup } from "@vastly/ui"
+import { useCreateUserMutation, useListUsersLazyQuery } from "graphql/graphql-types"
 
 export default function App() {
-  const [getUsers] = useListUsersLazyQuery();
+  const [getUsers] = useListUsersLazyQuery()
   const [createUser, { data, loading, error }] = useCreateUserMutation({
     variables: {
       data: {
-        email: 'fakeUser4@internet.com',
-        fullname: 'fake user4'
+        email: "fakeUser4@internet.com",
+        fullname: "fake user4"
       }
     }
-  });
+  })
 
   return (
-    <Box>
-      <Button onClick={async() => await createUser()}>
-        Create User
-      </Button>
-      <Button onClick={async() => await getUsers().then(({data}) => console.log("users: ", data))}>
-        List User
-      </Button>
-    </Box>
-  )};
-  ```
+    <Container mt="100" centerContent>
+      <ButtonGroup size="lg" colorScheme="blue">
+        <Button onClick={async () => await createUser()}>Create User</Button>
+        <Button
+          onClick={async () => await getUsers().then(({ data }) => console.log("users: ", data))}
+        >
+          List User
+        </Button>
+      </ButtonGroup>
+    </Container>
+  )
+}
+```
 
-  The above example shows how you can use a mutation or a lazy query with a trigger function. Each hook in this example has a destructured array of variables. The first variable is a function that triggers the hook and the second <i>optional</i> argument is the data that is returned from the event.
+The above example shows how you can use a mutation or a lazy query with a trigger function. Each
+hook in this example has a destructured array of variables. The first variable is a function that
+triggers the hook and the second <i>optional</i> argument is the data that is returned from the
+event.

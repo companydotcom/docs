@@ -8,20 +8,67 @@ variables, eliminating the need to modify individual components.
 
 ## Colors
 
-Each theme is assigned universal color variables, which are determined by common roles and usage.
-This allows for uniform color application across themes while maintaining full styling flexibility.
+Each theme is assigned universal color variables, which are determined by common roles and usage. This allows for uniform color application across themes while maintaining full styling flexibility.
+
+### Hierarchy
+
+When an element’s color contrasts with its surroundings, that element stands out, so users can tell it’s important. Because color themes vary – from bold and bright, to monochromatic or muted – there are different ways to indicate which elements have greater importance.
+
+### Brand
+
+Your brand can use color to emphasize its presence. Brand colors can be used in key moments, in ways that associate those colors with specific actions and information. Brand color application can be bold and brash, subtle and sophisticated, or anywhere in between. Your brand’s personal approach to color should be reflected in your app.
+
+### Meaning
+
+Color can communicate the meaning of different UI elements. 
+
+### Consistency and Context
+
+Color should be used consistently in a product, so that certain colors always mean the same thing, even if the context changes. Attention should also be given to colors with local or cultural significance. For example, alerts may typically be colored red in some cultures, but not in others.
+
+### State 
+
+Color should be noticeable when indicating state changes, as subtle differences in color may be missed. It’s best to indicate a change of state in more than one way, such as by displaying an icon or moving the location of an element.
 
 ## Typography
 
 Typography has four categories of type styles (universal, productive, editorial, and additional)
 that can be customized through tokens. These tokens are used both within components and across
-layouts. Type tokens are determined by their role across the system.
+layouts.
+
+### Type Properties
+
+A typeface is a collection of letters. While each letter is unique, certain shapes are shared across letters. A typeface represents shared patterns across a collection of letters. Typefaces that are selected for their style, legibility, and readability are most effective when following the fundamental principles of typographic design.
+
+### Baseline
+
+The baseline is the invisible line upon which a line of text rests. The baseline is an important specification in measuring the vertical distance between text and an element.
+
+### Measurement From the Baseline
+
+Specify distances from UI elements from the baseline. Baseline values are software-agnostic, so they work in any design program, and work with the grid. On Android and iOS, code can be translated from baseline-relative specs into padding. For the web, automate the calculation using Sass or CSS.
+
+### Cap Height
+
+Cap height refers to the height of a typeface’s flat capital letters (such as M or I) measured from the baseline. Round and pointed capital letters, such as S and A, are optically adjusted by being drawn with a slight overshoot above the cap height to achieve the effect of being the same size. Every typeface has a unique cap height.
+
+### Weight 
+
+Weight refers to the relative thickness of a font’s stroke. A typeface can come in many weights; and four to six weights is a typical number available for a typeface.
 
 ## Shadows
 
 Before being a decorative element, shadows were designed to promote user understanding. They bring
 additional information on the interface and more specifically on the targeted component. It can
 indicate possible interactions or reactions triggered by a user's action.
+
+### Usage 
+
+Because shadows express the degree of elevation between surfaces, they must be used consistently throughout your product.
+
+### Shadows and Motion
+
+Shadows provide useful cues about a surface’s direction of movement and whether the distance between surfaces is increasing or decreasing.
 
 ## Radii
 
@@ -36,8 +83,19 @@ breakpoint range, the layout adjusts to suit the screen size and orientation.
 ## Spacing
 
 Spacing is the negative area between elements and components. It is commonly controlled in code with
-margin and padding . Carbon offers several methods such as tokens and layout components to make
-implementing spacing in product easier and more consistent.
+margin and padding . 
+
+### Padding 
+
+Padding refers to the space between UI elements. Padding is an alternative spacing method to key lines and is measured in increments of 8px or 4px. Padding can be measured both vertically and horizontally and does not need to span the whole height of a layout.
+
+### Dimmensions
+
+Dimensions refer to the width and height of component elements. Some components only outline the height of an element. The heights of these elements should align to the 8px grid. Their widths are not specified because it’s responsive to a viewport width.
+
+### Alignment
+
+Alignment is the placement of elements within a component.
 
 <LinkCards>
   <LinkCard
