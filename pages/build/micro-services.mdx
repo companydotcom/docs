@@ -131,8 +131,16 @@ resolvers, and models mapping
 
 {" "}
 <Tabs items={["npm", "yarn"]}>
-  <Tab>```bash copy filename="services/[serviceName]" npm run generate ```</Tab>
-  <Tab>```bash copy filename="services/[serviceName]" yarn run generate ```</Tab>
+  <Tab>
+  ```bash copy filename="services/your-service-name"
+  npm run generate
+  ```
+  </Tab>
+  <Tab>
+  ```bash copy filename="services/your-service-name"
+  yarn run generate
+  ```
+  </Tab>
 </Tabs>
 
 #### <Text as='kbd' fontSize='xl'>dev</Text>
@@ -140,25 +148,52 @@ resolvers, and models mapping
 Run the local server, default database is SQLite
 
 <Tabs items={["npm", "yarn"]}>
-  <Tab>```bash copy filename="services/[serviceName]" npm run dev ```</Tab>
-  <Tab>```bash copy filename="services/[serviceName]" yarn run dev ```</Tab>
+  <Tab>
+  ```bash copy filename="services/your-service-name"
+  npm run dev
+  ```
+  </Tab>
+  <Tab>
+  ```bash copy filename="services/your-service-name"
+  yarn run dev
+  ```
+  </Tab>
 </Tabs>
+  <Callout>
+    For more information on setting up your local environment, check out the [Guides](/guides/local-dev) section!
+  </Callout>
 
 #### <Text as='kbd' fontSize='xl'>deploy</Text>
+---
 
 Prerequisite:
 
 - You need to setup your AWS credentials and your database. You can use any
   [compatible database](https://www.prisma.io/docs/concepts/database-connectors). Be sure you check
   the `README.md` for more information!
-- [Docker](https://docs.docker.com/get-docker/)
+- [Docker](https://docs.docker.com/get-docker/) - you won't need to make an account
+---
+
+  Once you have Docker open, run:
   <Tabs items={["npm", "yarn"]}>
-    <Tab>```bash copy filename="services/[serviceName]" npm run deploy ```</Tab>
-    <Tab>```bash copy filename="services/[serviceName]" yarn run deploy ```</Tab>
+    <Tab>
+    ```bash copy filename="services/your-service-name"
+    npm run deploy
+    ```
+    </Tab>
+    <Tab>
+    ```bash copy filename="services/your-service-name"
+    yarn run deploy
+    ```
+    </Tab>
   </Tabs>
+  After you have deployed your microservice, some credentials will be output into your console. These are your AppSync api key and your AppSync url. In addition, they will be written to a local file `deploy-outputs.json` for your consumption.
+  <Callout type="warning">
+  By default, `deploy-outputs.json` are included in your `.gitignore`. Never commit your credentials to git!
+  </Callout>
   <Callout>
-    TIP: You can securely store your `DATABASE_URL` using the `env` command from the [Vastly
-    CLI](/cli/env)!
+    TIP: You can securely store your `URL` and `API_KEY` using the `env` command from the [Vastly
+    CLI](/vastly-cli/env)!
   </Callout>
 
 ## References
