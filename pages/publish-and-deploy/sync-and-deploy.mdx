@@ -354,10 +354,6 @@ jobs:
             with:
               name: env-file
 
-          - name: Build ui
-            run: |
-              pnpm -C packages/ui run build
-
           - name: Deploying via SST to ${{ inputs.sst-env }} environment
             working-directory: ./apps/${{ inputs.app-name }}
             run: |
