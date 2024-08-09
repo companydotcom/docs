@@ -1,0 +1,95 @@
+## AMPLIFY AUTH
+
+CIAM via Amplify Gen 2 is also supported in the wave app. Follow steps for manual installation to
+begin. https://docs.amplify.aws/react/start/manual-installation/
+
+Next, follow steps for setting up Amplify Auth.
+https://docs.amplify.aws/react/build-a-backend/auth/set-up-auth/
+
+### Account Linking
+
+If users are provided with multiple methods of signing up (i.e. email, Google, Facebook, etc.),
+accounts can be linked if users sign up with the same email. A pre sign up lambda trigger is
+required for this check. An example of one can be found here:
+https://docs.amplify.aws/react/build-a-backend/functions/examples/email-domain-filtering/
+
+For an account linking pre sign up lambda trigger, the steps are similar:
+
+To get started, install the aws-lambda package, which is used to define the handler type.
+
+```bash copy filename="terminal"
+pnpm add --save-dev @types/aws-lambda
+```
+
+Next, create a new directory and a resource file, amplify/auth/pre-sign-up/resource.ts. Then, define
+the Function with defineFunction:
+
+```bash copy filename="amplify/auth/pre-sign-up/resource.ts"
+import { defineFunction } from "@aws-amplify/backend";
+
+export const preSignUp = defineFunction({
+  name: "pre-sign-up",
+});
+```
+
+Next, create the corresponding handler file, amplify/auth/pre-sign-up/handler.ts, file with the
+following contents:
+
+```bash copy filename="amplify/auth/pre-sign-up/handler.ts"
+import AWS from "aws-sdk";
+import type { PreSignUpTriggerHandler } from "aws-lambda";
+
+const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
+
+export const handler: PreSignUpTriggerHandler = async (event) => {
+  const userPoolId = event.userPoolId;
+  const userName = event.userName;
+
+  if (event.triggerSource === "PreSignUp_ExternalProvider") {
+    const providerName = userName.split("_")[0];
+    const providerUserId = userName.split("_")[1];
+    const params = {
+      SourceUser: {
+        ProviderName: providerName.charAt(0).toUpperCase() + providerName.slice(1),
+        ProviderAttributeName: "Cognito_Subject",
+        ProviderAttributeValue: providerUserId,
+      },
+      DestinationUser: {
+        ProviderName: "Cognito",
+        ProviderAttributeValue: event.request.userAttributes.email,
+      },
+      UserPoolId: userPoolId,
+    };
+
+    try {
+      await cognitoIdentityServiceProvider.adminLinkProviderForUser(params).promise();
+      console.log("Accounts linked successfully.");
+    } catch (error) {
+      console.error("Error linking accounts: ", error);
+    }
+
+    event.response.autoConfirmUser = true;
+    event.response.autoVerifyEmail = true;
+  }
+
+  return event;
+};
+```
+
+Lastly, set the newly created Function resource on your auth resource:
+
+```bash copy filename="amplify/auth/resource.ts"
+import { defineAuth } from '@aws-amplify/backend';
+import { preSignUp } from './pre-sign-up/resource';
+
+export const auth = defineAuth({
+  // ...
+  triggers: {
+    preSignUp
+  }
+});
+```
+
+After deploying the changes, whenever a user attempts to sign up with an external identity after
+already having an email/password account, the accounts will be linked in the Cognito User Pool as
+one.

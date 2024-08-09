@@ -1,0 +1,372 @@
+import { ListItem, UnorderedList } from "@vastly/ui"
+import { Callout } from "nextra-theme-docs"
+
+# Sync and Deploy
+This documentation provides a detailed overview of how to use and implement the sync and deploy system for your applications. The system is composed of multiple GitHub Actions workflows that work together to determine the deployment environment, sync secrets from DynamoDB, and deploy applications using SST. The purpose of this system is to automate deployment, maintaining a single source of truth for all secrets and environment variables for each client, environment, and app.
+
+## Overview
+
+<Callout>
+Before anything, make sure these two secrets are in place in the repository settings.
+</Callout>
+ * `OIDC token`: Account specific IAM role to retrieve AWS credentials
+ * `VASTLY_ENV_PAT token`: This is an organization level token used solely for accessing the shared-workflows repo
+The system consists of three main workflows. These workflows will require some inputs to be passed from one to the other, as well as some optional inputs with default values.
+1. **App Specific Workflow** (e.g. Admin, Client):
+    <UnorderedList>
+      <ListItem>Triggers on pushes to specific branches and paths</ListItem>
+      <ListItem>Uses the base configuration workflow to sync secrets and deploy the application</ListItem>
+    </UnorderedList><br/>
+2. **Base Configuration Workflow:**
+    <UnorderedList>
+      <ListItem>Determine the environment</ListItem>
+      <ListItem>Sync secrets (using reusable workflow)</ListItem>
+      <ListItem>Deploy the application (using resuable workflow)</ListItem>
+    </UnorderedList><br/>
+3. **Reusable Workflows:**
+    <UnorderedList>
+      <ListItem>Syncs secrets from DynamoDB to GitHub</ListItem>
+      <ListItem>Deploy</ListItem>
+    </UnorderedList>
+
+## Implementation Steps
+
+1. **Define Base Configuration Workflow:**
+   - Add the `base-configuration.yml` file to your repository's `.github/workflows/` directory. This workflow will call the reusable workflows. Edit where needed as specified below.
+
+2. **Create Specific Application Workflows:**
+   - Define application-specific workflows like `sync-and-deploy-admin.yml` that trigger on specific events and use the base configuration workflow.
+
+Below we will take a closer look at each workflow in depth to gain a better understanding of how they work themselves and work with each other
+
+## Workflow Breakdown
+### App Specific Workflow
+This workflow will live at the root level of the client account repository, in its `./github/workflows` directory. It triggers on pushes to the `main` or `sandbox` branches. It will only run if it detects changes in the `apps/{APP_NAME}/**` path. It uses the base configuration workflow to sync secrets and deploy the admin application. You can think of this as the first step in the sync and deploy system.
+
+#### Inputs
+  * `app-name`: string (required)
+  * `oidc`: string (required)
+  * `gh_token`: string (required)
+  * `dynamodb_table_name`: string <span style={{"color":"orange"}}><i>[default "env"]</i></span>
+  * `sst-env`: string <span style={{"color":"orange"}}><i>[defaults to deploy environment unless specified]</i></span>
+
+These will be passed to the `base-configuration` workflow
+
+
+#### Example
+
+```yaml {15,17,18} filename=".github/workflows/sync-and-deploy-admin.yml"
+name: Sync and deploy admin
+
+on:
+  push:
+    branches:
+      - main
+      - sandbox
+    paths:
+      - "apps/admin/**"
+
+jobs:
+  sync-and-deploy:
+    uses: ./.github/workflows/base-configuration.yml
+    with:
+      app-name: admin
+    secrets:
+      oidc: ${{ secrets.THM_IAM_ROLE }} // the name of this will be normalized across accounts
+      gh_token: ${{ secrets.VASTLY_ENV_PAT }}
+```
+
+### Base Configuration Workflow
+This workflow handles the core logic of determining the environment and calling the reusable workflows sync-secrets and deploy. From the workflow above, it will determine which environment to sync secrets from and deploy to based on the branch and the `app-name` input. It uses a matrix strategy with 2 standard environments: `[sandbox, prod]`. After that, it will pass tokens, inputs, and environment to the two reusable workflows.
+
+  #### Things to Note
+
+  This workflow currently lives in the client account repository. This is because of the inconsistencies with naming environments (e.g. prod vs production), how many there are, and the SST stage mismatching environment. Future adaptation of this workflow will be a more reusable version that lives in the shared-workflows repository. For now, we will be able to edit it for our current clients and their repositories as needed. `The highlighted areas below are the only lines that should be edited.`
+
+#### Usage
+Notice the inputs listed. These are what is expected from the app level workflow. The `on: workflow_call` means this workflow can be called from other workflows. Each subsequent job is dependent on each other and will not run if the other fails. They also will not run if a proper environment is not set.  If no value for `sst-env` is passed from the app level workflow, it will default to the environment set in `determine-env`.
+
+```yaml {34, 39-40} filename=".github/workflows/base-configuration.yml"
+name: Base configuration
+
+on:
+  workflow_call:
+    inputs:
+      dynamodb_table_name:
+        description: 'The name of the DynamoDB table'
+        type: string
+        required: false
+        default: 'env'
+      app-name:
+        description: "App Being Deployed"
+        type: string
+        required: true
+      sst-env:
+        description: "The SST environment to deploy"
+        type: string
+        required: false
+    secrets:
+      oidc:
+        description: 'IAM role to retrieve credentials'
+        required: true
+      gh_token:
+        description: 'GitHub token'
+        required: true
+
+jobs:
+  determine-env:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.determine-env.outputs.environment }}
+    strategy:
+      matrix:
+        target: [sandbox, prod]
+    steps:
+      - name: Determine Environment
+        id: determine-env
+        run: >-
+          if [[ ("${{ matrix.target }}" == "sandbox" && "${{ github.ref_name }}" == "sandbox") ||
+                ("${{ matrix.target }}" == "prod" && "${{ github.ref_name }}" == "main") ]]; then
+            echo "environment=${{ matrix.target }}" >> $GITHUB_OUTPUT
+          else
+            echo "No matching environment for target=${{ matrix.target }} and ref=${{ github.ref_name }}"
+          fi
+
+  sync-secrets:
+    needs: determine-env
+    if: ${{ needs.determine-env.outputs.environment != null }}
+    name: Sync secrets for ${{ needs.determine-env.outputs.environment }}
+    uses: companydotcom/shared-workflows/.github/workflows/sync-secrets.yml@main
+    with:
+      environment: ${{ needs.determine-env.outputs.environment }}
+      dynamodb_table_name: ${{ inputs.dynamodb_table_name }}
+    secrets:
+      oidc: ${{ secrets.oidc }}
+      gh_token: ${{ secrets.gh_token }}
+    permissions:
+      id-token: write
+      contents: read
+
+  deploy-app:
+    needs: [determine-env, sync-secrets]
+    if: ${{ needs.determine-env.outputs.environment != null }}
+    name: Deploy app for ${{ inputs.app-name }}-${{ needs.determine-env.outputs.environment }}
+    uses: companydotcom/shared-workflows/.github/workflows/deploy-app.yml@main
+    with:
+      app-name: ${{ inputs.app-name }}
+      sst-env: ${{ inputs.sst-env || needs.determine-env.outputs.environment }}
+    secrets:
+      oidc: ${{ secrets.oidc }}
+
+```
+### Reusable Workflows
+#### Sync secrets from DynamoDB to GitHub
+    This workflow is designed to dynamically synchronize secrets from an AWS DynamoDB table to GitHub based on inputs passed from the `base-configuration` workflow. By using a single source of truth, we won't have to worry about missing or mismatching secrets or variables. It consists of two main jobs: `build` and `use-secrets`.
+
+    ##### Usage
+      1. `build`
+          * sets inputs and secrets as envs
+          * uses the `OIDC` token to get AWS credentials to use the AWS SDK
+          * checks out the shared-workflows repository using the organization token
+          * sets up node, installs pnpm and builds
+          * runs the sync secrets script using the inputs and secrets set in the first step
+
+      2. `use-secrets`
+          * uses the `OIDC` token to get AWS credentials to use the [Vasly CLI env](/vastly-cli/env) tool
+          * checks out the initial repository
+          * sets up node, installs the [Vasly CLI env](/vastly-cli/env) tool
+          * uploads the `.env` file created in the previous step as an artifact to be used in subsequent workflows
+
+
+    ```yaml filename="companydotcom/shared-workflows/.github/workflows/sync-secrets.yml"
+    name: Sync Secrets from DynamoDB to GitHub
+
+    on:
+      workflow_call:
+        inputs:
+          environment:
+            description: 'The environment for which to sync secrets (e.g., dev, prod)'
+            type: string
+            required: true
+          dynamodb_table_name:
+            description: 'The name of the DynamoDB table'
+            type: string
+            required: false
+            default: 'env'
+        secrets:
+          gh_token:
+            description: 'GitHub token'
+            required: true
+          oidc:
+            description: 'IAM role to retrieve credentials'
+            required: true
+
+    jobs:
+      build:
+      name: Sync secrets to GitHub
+      runs-on: ubuntu-latest
+      permissions:
+        id-token: write
+        contents: read
+      env:
+        ENVIRONMENT: ${{ inputs.environment }}
+        GITHUB_TOKEN: ${{ secrets.gh_token || github.token }}
+        DYNAMODB_TABLE_NAME: ${{ inputs.dynamodb_table_name }}
+        OWNER_REPO: ${{ github.repository }}
+      steps:
+        - name: Configure AWS credentials from Test account
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            role-to-assume: ${{ secrets.oidc }}
+            aws-region: us-east-1
+
+        - name: Checkout shared workflows repository
+          uses: actions/checkout@v4
+          with:
+            repository: companydotcom/shared-workflows
+            path: shared-workflows
+            token: ${{ secrets.gh_token || github.token }}
+
+        - name: Set up Node.js for shared workflows
+          uses: actions/setup-node@v4
+          with:
+            node-version: 20
+
+        - name: Install pnpm and build
+          working-directory: shared-workflows
+          run: |
+            npm install -g pnpm
+            pnpm install
+            pnpm run build
+
+        - name: Sync secrets to GitHub
+          working-directory: shared-workflows
+          run: |
+            node dist/utils/sync-secrets-to-github.js
+
+      use-secrets:
+      name: Pull and upload Env
+      runs-on: ubuntu-latest
+      needs: build
+      permissions:
+        id-token: write
+        contents: read
+      steps:
+        - name: Configure AWS credentials from Test account
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            role-to-assume: ${{ secrets.oidc }}
+            aws-region: us-east-1
+
+        - name: Checkout repository
+          uses: actions/checkout@v4
+
+        - name: Set up Node.js for shared workflows
+          uses: actions/setup-node@v4
+          with:
+            node-version: 20
+
+        - name: Install CLI, Pull Env
+          run: |
+            npm install -g @vastly/cli
+            vastly env pull -a
+
+        - name: Upload .env file as artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: env-file
+            path: .env
+    ```
+#### Deploy Nextjs App
+      This workflow uses the inputs passed from the base-configuration workflow and runs the appropriate SST commands to deploy the specified app to the specified environment. It consists of on main job: `deploy`.
+
+
+    ##### Usage
+      1. `deploy`
+          * checks out the initial repository
+          * uses the `OIDC` token to get AWS credentials to use SST
+          * sets up node, installs pnpm
+          * downloads the `.env` artifact that was uploaded in the previous workflow (`use-secrets`)
+          * injects the envs into the runtime environment
+          * removes the artifact as clean up
+          * builds and deploys the application
+
+    ```yaml filename="companydotcom/shared-workflows/.github/workflows/deploy-app.yml"
+    on:
+      workflow_call:
+        inputs:
+          app-name:
+            description: "App Being Deployed"
+            type: string
+            required: true
+          sst-env:
+            description: "The environment to deploy"
+            type: string
+            required: true
+        secrets:
+          oidc:
+            description: 'IAM role to retrieve credentials'
+            required: true
+
+      jobs:
+        deploy:
+        name: Deploy Next.Js App to ${{ inputs.sst-env }}
+        runs-on: ubuntu-latest
+        permissions:
+          id-token: write
+          contents: read
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v4
+
+          - name: Configure AWS credentials from Test account
+            uses: aws-actions/configure-aws-credentials@v4
+            with:
+              role-to-assume: ${{ secrets.oidc }}
+              aws-region: us-east-1
+
+          - name: Node Installation
+            uses: actions/setup-node@v4
+            with:
+              node-version: 20
+
+          - name: Install pnpm
+            uses: pnpm/action-setup@v4
+            with:
+              version: 8
+              run_install: |
+                - args: [--no-frozen-lockfile]
+
+          - name: Download .env file from artifacts
+            uses: actions/download-artifact@v4
+            with:
+              name: env-file
+              path: .
+
+          - name: Export environment variables
+            run: |
+              set -a
+              source .env
+              set +a
+
+          - name: Env clean up
+            uses: geekyeggo/delete-artifact@v5
+            with:
+              name: env-file
+
+          - name: Deploying via SST to ${{ inputs.sst-env }} environment
+            working-directory: ./apps/${{ inputs.app-name }}
+            run: |
+              pnpm sst deploy --stage ${{ inputs.sst-env }}
+  ```
+## Summary
+With the above workflow files in place, you can now implement a robust and automated system for syncing secrets and deploying applications across multiple environments. This system ensures that your secrets are always up-to-date and that deployments are consistent and reliable.
+
+### Future Adaptations and Improvements
+  - Make the `base-configuration` completely dynamic and reusable
+  - Add sync and deploy workflows for services
+  - Create a better strategy for injecting the `OIDC` and the `VASTLY_ENV_PAT` before workflows start
+  - Create a custom action for syncing secrets
+
+
+

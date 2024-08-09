@@ -15,7 +15,7 @@ services. This architectural approach allows for better scalability, flexibility
 isolation, as well as enabling teams to work on different microservices simultaneously, promoting
 faster development and deployment cycles.
 
-With the [Vastly CLI](https://www.npmjs.com/package/@vastly/cli), you can [generate](/cli/generate),
+With the [Vastly CLI](https://www.npmjs.com/package/@vastly/cli), you can [generate](/wave-cli/generate),
 manage, and deploy one or many microservices for your front-end application in just a few steps.
 
 ## Usage
@@ -130,7 +130,7 @@ Navigate into your microservice directory to run these scripts. After each `gene
 resolvers, and models mapping
 
 {" "}
-<Tabs items={["npm", "yarn"]}>
+<Tabs items={["npm", "pnpm"]}>
   <Tab>
   ```bash copy filename="services/your-service-name"
   npm run generate
@@ -138,7 +138,7 @@ resolvers, and models mapping
   </Tab>
   <Tab>
   ```bash copy filename="services/your-service-name"
-  yarn run generate
+  pnpm run generate
   ```
   </Tab>
 </Tabs>
@@ -147,7 +147,7 @@ resolvers, and models mapping
 
 Run the local server, default database is SQLite
 
-<Tabs items={["npm", "yarn"]}>
+<Tabs items={["npm", "pnpm"]}>
   <Tab>
   ```bash copy filename="services/your-service-name"
   npm run dev
@@ -155,7 +155,7 @@ Run the local server, default database is SQLite
   </Tab>
   <Tab>
   ```bash copy filename="services/your-service-name"
-  yarn run dev
+  pnpm run dev
   ```
   </Tab>
 </Tabs>
@@ -175,7 +175,7 @@ Prerequisite:
 ---
 
   Once you have Docker open, run:
-  <Tabs items={["npm", "yarn"]}>
+  <Tabs items={["npm", "pnpm"]}>
     <Tab>
     ```bash copy filename="services/your-service-name"
     npm run deploy
@@ -183,7 +183,7 @@ Prerequisite:
     </Tab>
     <Tab>
     ```bash copy filename="services/your-service-name"
-    yarn run deploy
+    pnpm run deploy
     ```
     </Tab>
   </Tabs>
