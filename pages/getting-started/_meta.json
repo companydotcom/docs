@@ -1,14 +1,5 @@
 {
   "setting-up-your-first-monorepo": {
     "title": "Setting Up Your First Monorepo With Wave"
-  },
-  "vastly-account-setup": {
-    "title": "Vastly Account Setup"
-  },
-  "deploying-your-wave-app": {
-    "title": "Deploying Your Wave App"
-  },
-  "dns-configuration": {
-    "title": "DNS Configuration"
   }
 }

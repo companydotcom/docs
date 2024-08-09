@@ -11,9 +11,6 @@
   "build": {
     "title": "Build"
   },
-  "publish-and-deploy": {
-    "title": "Publish and Deploy"
-  },
   "vastly-cli": {
     "title": "Vastly CLI"
   },
