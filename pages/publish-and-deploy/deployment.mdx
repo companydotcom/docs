@@ -1,84 +1,95 @@
-import { ListItem, UnorderedList, OrderedList } from "@vastly/ui"
-import { Callout } from "nextra-theme-docs"
+import { ListItem, UnorderedList, OrderedList } from "@vastly/ui";
+import { Callout } from "nextra-theme-docs";
+import { Steps } from "nextra/components";
 
 # Sync and Deploy
 This documentation provides an overview of how to utilize the sync and deploy system for applications. This system automates the deployment process, maintains a single source of truth for secrets and environment variables, and ensures consistency across different environments.
 ## Overview
 
 <Callout>
-Ensure the following secrets are configured in the repository settings before proceeding: <br/>
- * `OIDC_IAM_ROLE`: Account specific IAM role to retrieve AWS credentials
+Ensure the following secrets are configured in the repository settings before proceeding:
+ * `OIDC_IAM_ROLE`: Account specific IAM role to retrieve AWS credentials. This is necessary for accessing CloudFormation and the [`vastly env`](/vastly-cli) service.
 </Callout>
 
-
-The system consists of a few custom actions. These workflows will require some inputs to be passed from one to the other, as well as some optional inputs with default values.
+These workflows will require some inputs to be passed from one to the other, as well as some optional inputs with default values. Here's a quick breakdown.
 1. **App Specific Workflow**:
     <UnorderedList>
+      <ListItem>Exists as part of the <font color="orange">`create-wave-app`</font> template</ListItem>
       <ListItem>Triggers on pushes to specific branches and paths</ListItem>
       <ListItem>Allows for manual deployment via the GitHub Actions interface. Users can select the environment (uat, prod) during manual execution</ListItem>
       <ListItem>Deployment library agnostic</ListItem>
     </UnorderedList><br/>
 2. **Reusable Actions:**
     <UnorderedList>
+      <ListItem>Exists in the <font color="orange">`shared-workflows`</font> repository</ListItem>
       <ListItem>Syncs secrets from DynamoDB to GitHub</ListItem>
-      <ListItem>Export environment variables</ListItem>
+      <ListItem>Exports environment variables using github artifacts</ListItem>
     </UnorderedList>
 
 ## Usage
-  **1. Edit the `deploy-app-example.yml` to fit your specific deployment needs. See the `README.md` of your Wave App under Deployment for more info.<br/><br/>**
+<Steps>
+### Edit
 
-    <UnorderedList>
-      <ListItem>Change the paths in the `on:` section.</ListItem>
-      <ListItem>Configure the `options` with the deployment environments that exists in github.</ListItem>
-      <ListItem>Replace the path for the `Download .env file` step to point to the app that is being deployed.</ListItem>
-      <ListItem>In the space provided, place any custom logic that is needed before deployment.</ListItem>
-      <ListItem>In the `Deploy` step, replace the run script with the deploy command of your choosing.</ListItem>
-      <ListItem>Lastly, rename the file and names of any steps needed.</ListItem>
-    </UnorderedList>
+Configure <font color="orange">`deploy-app-example.yml`</font> to fit your specific needs. See the <font color="orange">`README.md`</font> of your Wave App for more info<br/><br/>
 
-  **2. Trigger Workflow**<br/><br/>
-      <UnorderedList>
-      <ListItem>By pushing changes to the main branch that affect files in the specified path, example `[apps/client, apps/admin]`</ListItem>
-      <ListItem>Or manually trigger via the GitHub Actions UI by selecting the desired environment</ListItem>
-      </UnorderedList>
+<OrderedList>
+  <ListItem>Change the paths in the <font color="orange">`on:`</font> section.</ListItem>
+  <ListItem>Configure the <font color="orange">`options`</font> with the deployment environments that exists in github.</ListItem>
+  <ListItem>Replace the path for the <font color="orange">`Download .env file`</font> step to point to the app that is being deployed.</ListItem>
+  <ListItem>In the space provided, place any custom logic that is needed before deployment.</ListItem>
+  <ListItem>In the <font color="orange">`Deploy`</font> step, replace the run script with the deploy command of your choosing.</ListItem>
+  <ListItem>Lastly, rename the file and names of any steps needed.</ListItem>
+</OrderedList>
 
-  **3.Monitor Workflow Progress**<br/><br/>
-      <UnorderedList>
-      <ListItem>Follow the workflow's progress in the GitHub Actions tab.</ListItem>
-      <ListItem>Ensure that the app is successfully deployed to the selected environment.</ListItem>
-      </UnorderedList>
+### Trigger Workflow
 
+<OrderedList>
+<ListItem>Push changes to the main branch (or any specified branch) that affect files in the specified path, example <font color="orange">`[apps/client, apps/admin]`</font></ListItem>
+<ListItem>Or manually trigger via the GitHub Actions UI by selecting the desired environment</ListItem>
+</OrderedList>
+
+### Monitor Workflow progress
+
+<OrderedList>
+<ListItem>Follow the workflow's progress in the GitHub Actions tab.</ListItem>
+<ListItem>Ensure that the app is successfully deployed to the selected environment.</ListItem>
+</OrderedList>
+</Steps>
 
 
 ## Workflow Breakdown
-### Inputs
-  * `environment`: string <span style={{"color":"orange"}}><i>[defaults to uat]</i></span>
+
+#### Inputs
+
+`environment`: string <font color="orange"><i>[defaults to uat]</i></font>
 
 ### Reusable Pre-deployment
-  #### Sync secrets from DynamoDB to GitHub
-      This workflow is designed to dynamically synchronize secrets from an AWS DynamoDB table to GitHub based on environment. By using a single source of truth, we won't have to worry about missing or mismatching secrets or variables.
-      * fetches secrets from dynamo
-      * fetches secrets from github
-      * updates secrets in github with the secrets from dynamo
-      * deletes any secrets that do not exist in dynamo
+These are reusable actions that can function separately or work in tandem as a composite action.
+
+#### Sync secrets from DynamoDB to GitHub
+
+This action is designed to dynamically synchronize secrets from an AWS DynamoDB table to GitHub based on environment. By using a single source of truth, we won't have to worry about missing or mismatching secrets or variables.
+* fetches secrets from dynamo
+* fetches secrets from github
+* compares the two and updates secrets in github
+* deletes any secrets that do not exist in dynamo
 
 #### Export env
-      This workflow uses the `vastly env` service to pull environment specific envs and uploads them as an artifact to be used later in the deployment process
+This action uses the <font color="orange">`vastly env`</font> service to pull environment specific envs and uploads them as an artifact to be used later in the deployment process
 
 ### App Specific Workflow
-This workflow will live at the root level of the client account repository, in its `./github/workflows` directory.
+This workflow will live at the root level of the client account repository, in its <font color="orange">`./github/workflows`</font> directory.
 
-  #### Steps
-      * Checkout client repo
-      * Configure AWS credentials (environment based)
-      * Install Node
-      * Install pnpm and dependencies
-      * Calls the reusable pre-deployment actions from the shared workflows
-      * Downloads the env artifact from the previous step (path needs to point to the app being deployed)
-      * Any custom app logic necessary for deployment
-      * Deploy the app using whichever library: `pnpm sst deploy --stage uat`
-      * Deletes the env artifact
-
+#### Steps Overview
+* Checkout client repo
+* Configure AWS credentials (environment based)
+* Install Node
+* Install pnpm and dependencies
+* Calls the reusable pre-deployment actions from the shared workflows
+* Downloads the env artifact from the previous step (path needs to point to the app being deployed)
+* Any custom app logic necessary for deployment
+* Deploy the app using whichever library: <font color="orange">`pnpm sst deploy --stage uat`</font>
+* Deletes the env artifact
 ## Example
 
 ```yaml filename=".github/workflows/deploy-app-example.yml"
@@ -119,7 +130,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          # be sure this secret is in place before initial deployment
+          # be sure this secret exists in the repository before initial deployment
           role-to-assume: ${{ secrets.OIDC_IAM_ROLE }}
           aws-region: us-east-1
 
@@ -175,7 +186,7 @@ With the above workflow files in place, you can now implement a robust and autom
 
 ### Future Adaptations and Improvements
   - Make the App Specific workflow app agnostic
-  - Create a better strategy for injecting the `OIDC` before workflows start
+  - Create a better strategy for injecting the <font color="orange">`OIDC_IAM_ROLE`</font> before workflows start
 
 
 
